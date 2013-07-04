@@ -3,6 +3,8 @@ var colors = ["red", "green", "blue", "grey"];
 
 var bricks = [[[1, 1, 1],
 	       [0, 0, 1]],
+	      [[0, 0, 1],
+	       [1, 1, 1]],
 	      [[1, 1, 0],
 	       [0, 1, 1]],
 	      [[0, 1, 1],
@@ -12,7 +14,7 @@ var bricks = [[[1, 1, 1],
 	      [[1, 1, 1, 1]],
 	      [[1, 1],
 	       [1, 1]]];
-var center = [[0, 1], [0, 1], [0, 1], [1, 1], [0, 1], [-1, -1]];
+var center = [[0, 1], [1, 1], [0, 1], [0, 1], [1, 1], [0, 1], [-1, -1]];
 
 var field_width = 10;
 var field_height = 30;
@@ -153,8 +155,13 @@ function remove_full_lines() {
 	    }
 
 	    points+= 10;
+	    set_points();
 	}
     }
+}
+
+function set_points() {
+    $("#score").text(points);
 }
 
 function launch() {
@@ -222,4 +229,6 @@ $(function() {
     setup();
     interval_id = setInterval(move, 1000);
     launch();
+    points = 0;
+    set_points();
 });
