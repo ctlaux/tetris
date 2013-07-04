@@ -31,11 +31,13 @@ var color = 2;
 
 var points = 0;
 
+var interval_id = 0;
+
 
 function setup() {
-    for(i = 0; i < field_width; i++) {
+    for(var i = 0; i < field_width; i++) {
 	field[i] = new Array(field_height);
-	for(j = 0; j < field_height; j++) {
+	for(var j = 0; j < field_height; j++) {
 	    field[i][j] = -1;
 	}
     }
@@ -50,8 +52,8 @@ function draw() {
     c.rect(0, 0, canvas.width, canvas.height);
     c.stroke();
 
-    for(i = 0; i < field_width; i++) {
-	for(j = 0; j < field_height; j++) {
+    for(var i = 0; i < field_width; i++) {
+	for(var j = 0; j < field_height; j++) {
 	    if(field[i][j] != -1) {
 		draw_brick(c, i*width, j*height, field[i][j]);
 	    }
@@ -64,7 +66,7 @@ function draw() {
 function draw_block(c, center_x, center_y, rot, m) {
     var b = calculate_bricks(rot, m);
 
-    for(i = 0; i < b.length; i++) {
+    for(var i = 0; i < b.length; i++) {
 	draw_brick(c, (center_x + b[i][0]) * width, (center_y + b[i][1]) * height, color);
     }
 }
@@ -77,8 +79,8 @@ function draw_brick(c, x, y, color) {
 function calculate_bricks(rot, m) {
     var ret = [];
 
-    for(i = 0; i < bricks[m].length; i++) {
-	for(j = 0; j < bricks[m][0].length; j++) {
+    for(var i = 0; i < bricks[m].length; i++) {
+	for(var j = 0; j < bricks[m][0].length; j++) {
 	    if(bricks[m][i][j] == 1) {
 		k = i - center[m][0];
 		l = j - center[m][1];
@@ -118,7 +120,7 @@ function move() {
 
     var stopped = false;
     b = calculate_bricks(rot, type);
-    for(i = 0; i < b.length; i++) {
+    for(var i = 0; i < b.length; i++) {
 	if(y + b[i][1] == field_height - 1)
 	    stopped = true;
 	if(y + b[i][1] >= 0) {
@@ -128,28 +130,29 @@ function move() {
     }
 
     if(stopped) {
-	for(i = 0; i < b.length; i++) {
+	for(var i = 0; i < b.length; i++) {
 	    field[x + b[i][0]][y + b[i][1]] = color;
 	}
 
 	remove_full_lines();
 
-	launch();
+	if(!is_game_over())
+	    launch();
     }
 
     draw();
 }
 
 function remove_full_lines() {
-    for(j = 0; j < field_height; j++) {
+    for(var j = 0; j < field_height; j++) {
 	full = true;
-	for(i = 0; i < field_width; i++)
+	for(var i = 0; i < field_width; i++)
 	    if(field[i][j] == -1)
 		full = false;
 
 	if(full) {
-	    for(k = 0; k < field_width; k++) {
-		for(l = j; l > 0; l--)
+	    for(var k = 0; k < field_width; k++) {
+		for(var l = j; l > 0; l--)
 		    field[k][l] = field[k][l-1];
 		field[k][0] = -1;
 	    }
@@ -172,7 +175,7 @@ function launch() {
     var start = 0;
     var end = field_width;
     var b = calculate_bricks(rot, type);
-    for(i = 0; i < b.length; i++) {
+    for(var i = 0; i < b.length; i++) {
 	start = Math.max(start, -b[i][0])
 	end = Math.min(end, field_width - b[i][0])
     }
@@ -183,6 +186,33 @@ function launch() {
     console.log("launching with x = " + x + " and y = " + y);
 }
 
+function is_game_over() {
+    over = false;
+    for(var i = 0; i < field_width; i++) {
+	if(field[i][0] != -1)
+	    over = true;
+    }
+
+    if(over) {
+	clearInterval(interval_id);
+	$("#message").show();
+	return true;
+    }
+
+    return false;
+}
+
+function new_game() {
+    $("#message").hide();
+    setup();
+    points = 0;
+    set_points();
+    launch();
+    if (interval_id != 0)
+	clearInterval(interval_id);
+    interval_id = setInterval(move, 1000);
+    draw();
+}
 
 keypress.combo("up", function() {
     if(center[type][0] != -1) {
@@ -200,7 +230,7 @@ keypress.combo("down", function() {
 keypress.combo("right", function() {
     var move = true;
     var b = calculate_bricks(rot, type);
-    for(i = 0; i < b.length; i++) {
+    for(var i = 0; i < b.length; i++) {
 	if(x + b[i][0] == field_width - 1)
 	    move = false;
     }
@@ -214,7 +244,7 @@ keypress.combo("right", function() {
 keypress.combo("left", function() {
     var move = true;
     var b = calculate_bricks(rot, type);
-    for(i = 0; i < b.length; i++) {
+    for(var i = 0; i < b.length; i++) {
 	if(x + b[i][0] == 0)
 	    move = false;
     }
@@ -226,9 +256,5 @@ keypress.combo("left", function() {
 });
 
 $(function() {
-    setup();
-    interval_id = setInterval(move, 1000);
-    launch();
-    points = 0;
-    set_points();
+    new_game();
 });
