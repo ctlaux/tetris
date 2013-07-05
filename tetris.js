@@ -19,6 +19,7 @@ var center = [[0, 1], [1, 1], [0, 1], [0, 1], [1, 1], [0, 1], [-1, -1]];
 var field_width = 10;
 var field_height = 30;
 var field = new Array(field_width);
+var squares = [];
 
 var width = 20;
 var height = 20;
@@ -56,23 +57,23 @@ function draw() {
     for(var i = 0; i < field_width; i++) {
 	for(var j = 0; j < field_height; j++) {
 	    if(field[i][j] != -1) {
-		draw_brick(c, i*width, j*height, field[i][j]);
+		draw_square(c, i*width, j*height, field[i][j]);
 	    }
 	}
     }
 
-    draw_block(c, x, y, rot, type);
+    draw_brick(c, x, y, rot, type);
+
+    draw_rotation();
 }
 
-function draw_block(c, center_x, center_y, rot, m) {
-    var b = calculate_bricks(rot, m);
-
-    for(var i = 0; i < b.length; i++) {
-	draw_brick(c, (center_x + b[i][0]) * width, (center_y + b[i][1]) * height, color);
+function draw_brick(c, center_x, center_y) {
+    for(var i = 0; i < squares.length; i++) {
+	draw_square(c, (center_x + squares[i][0]) * width, (center_y + squares[i][1]) * height, color);
     }
 }
 
-function draw_brick(c, x, y, color) {
+function draw_square(c, x, y, color) {
     var r = colors[color][0];
     var g = colors[color][1];
     var b = colors[color][2];
@@ -106,7 +107,7 @@ function draw_brick(c, x, y, color) {
     c.stroke();
 }
 
-function calculate_bricks(rot, m) {
+function calculate_squares(rot, m) {
     var ret = [];
 
     for(var i = 0; i < bricks[m].length; i++) {
@@ -149,19 +150,18 @@ function move() {
     y++;
 
     var stopped = false;
-    b = calculate_bricks(rot, type);
-    for(var i = 0; i < b.length; i++) {
-	if(y + b[i][1] == field_height - 1)
+    for(var i = 0; i < squares.length; i++) {
+	if(y + squares[i][1] == field_height - 1)
 	    stopped = true;
-	if(y + b[i][1] >= 0) {
-	    if(field[x + b[i][0]][y + b[i][1] + 1] != -1)
+	if(y + squares[i][1] >= 0) {
+	    if(field[x + squares[i][0]][y + squares[i][1] + 1] != -1)
 		stopped = true;
 	}
     }
 
     if(stopped) {
-	for(var i = 0; i < b.length; i++) {
-	    field[x + b[i][0]][y + b[i][1]] = color;
+	for(var i = 0; i < squares.length; i++) {
+	    field[x + squares[i][0]][y + squares[i][1]] = color;
 	}
 
 	remove_full_lines();
@@ -204,10 +204,11 @@ function launch() {
 
     var start = 0;
     var end = field_width;
-    var b = calculate_bricks(rot, type);
-    for(var i = 0; i < b.length; i++) {
-	start = Math.max(start, -b[i][0])
-	end = Math.min(end, field_width - b[i][0])
+    squares = calculate_squares(rot, type);
+
+    for(var i = 0; i < squares.length; i++) {
+	start = Math.max(start, -squares[i][0])
+	end = Math.min(end, field_width - squares[i][0])
     }
 
     x = Math.floor(Math.random() * (end - start - 1)) + start;
@@ -249,6 +250,7 @@ keypress.combo("up", function() {
 	rot++;
 	if(rot == 4)
 	    rot = 0;
+	squares = calculate_squares(rot, type);
 	draw();
     }
 });
@@ -259,9 +261,8 @@ keypress.combo("down", function() {
 
 keypress.combo("right", function() {
     var move = true;
-    var b = calculate_bricks(rot, type);
-    for(var i = 0; i < b.length; i++) {
-	if(x + b[i][0] == field_width - 1)
+    for(var i = 0; i < squares.length; i++) {
+	if(x + squares[i][0] == field_width - 1)
 	    move = false;
     }
 
@@ -273,11 +274,9 @@ keypress.combo("right", function() {
 
 keypress.combo("left", function() {
     var move = true;
-    var b = calculate_bricks(rot, type);
-    for(var i = 0; i < b.length; i++) {
-	if(x + b[i][0] == 0)
+    for(var i = 0; i < squares.length; i++)
+	if(x + squares[i][0] == 0)
 	    move = false;
-    }
 
     if(move) {
 	x--;
