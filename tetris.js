@@ -1,5 +1,5 @@
 
-var colors = ["red", "green", "blue", "grey"];
+var colors = [[224, 27, 93], [152, 224, 27], [130, 130, 130]];
 
 var bricks = [[[1, 1, 1],
 	       [0, 0, 1]],
@@ -49,6 +49,7 @@ function draw() {
     canvas.height = field_height * height;
 
     var c = canvas.getContext('2d');
+    c.strokeStyle = "black";
     c.rect(0, 0, canvas.width, canvas.height);
     c.stroke();
 
@@ -72,8 +73,37 @@ function draw_block(c, center_x, center_y, rot, m) {
 }
 
 function draw_brick(c, x, y, color) {
-    c.fillStyle = colors[color];
+    var r = colors[color][0];
+    var g = colors[color][1];
+    var b = colors[color][2];
+    c.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
     c.fillRect(x, y, width, height);
+
+    var dark_r = Math.floor(r * 0.5);
+    var dark_g = Math.floor(g * 0.5);
+    var dark_b = Math.floor(b * 0.5);
+    c.beginPath();
+    c.strokeStyle = "rgb(" + dark_r + "," + dark_g + "," + dark_b + ")";
+    c.moveTo(x, y);
+    c.lineTo(x, y + height - 1);
+    c.lineTo(x + width - 1, y + height - 1);
+    c.moveTo(x + 1, y + 1);
+    c.lineTo(x + 1, y + height - 2);
+    c.lineTo(x + width - 2, y + height - 2);
+    c.stroke();
+
+    var light_r = Math.min(255, Math.floor(r * 1.5));
+    var light_g = Math.min(255, Math.floor(g * 1.5));
+    var light_b = Math.min(255, Math.floor(b * 1.5));
+    c.beginPath();
+    c.strokeStyle = "rgb(" + light_r + "," + light_g + "," + light_b + ")";
+    c.moveTo(x + width - 1, y + height - 1);
+    c.lineTo(x + width - 1, y);
+    c.lineTo(x, y);
+    c.moveTo(x + width - 2, y + height - 2);
+    c.lineTo(x + width - 2, y + 1);
+    c.lineTo(x + 1, y + 1);
+    c.stroke();
 }
 
 function calculate_bricks(rot, m) {
