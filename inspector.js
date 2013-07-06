@@ -19,6 +19,10 @@ function draw_rotation() {
     var c = canvas.getContext('2d');
 
     var b = calculate_squares(0, type);
+    c.fillStyle = "rgb(200, 200, 250)";
+    c.fillRect(original_x + b[selected][0] * width, original_y + b[selected][1] * height, width, height);
+    c.fillRect(rotated_x + squares[selected][0] * width, rotated_y + squares[selected][1] * height, width, height);
+
     for(var i = 0; i < b.length; i++) {
 	c.beginPath();
 	c.strokeStyle = "grey";
@@ -49,6 +53,8 @@ function draw_rotation() {
 	draw_arrow(c, x1, y1, x1 + blue[0] * width, y1 + blue[1] * height, "blue");
     if((red[0]-blue[0]) != 0 || (red[1]-blue[1]) != 0)
 	draw_arrow(c, x1 + blue[0] * width, y1 + blue[1] * height, x1 + red[0] * width, y1 + red[1] * height, "red");
+
+    draw_arc_arrow(c, 150, 50, rot)
 }
 
 function draw_arrow(c, from_x, from_y, to_x, to_y, color) {
@@ -62,5 +68,36 @@ function draw_arrow(c, from_x, from_y, to_x, to_y, color) {
     c.lineTo(to_x - head_length*Math.cos(angle-Math.PI/6), to_y - head_length*Math.sin(angle-Math.PI/6));
     c.moveTo(to_x, to_y);
     c.lineTo(to_x - head_length*Math.cos(angle+Math.PI/6), to_y - head_length*Math.sin(angle+Math.PI/6));
+    c.stroke();
+}
+
+function draw_arc_arrow(c, x, y, rot) {
+    var radius = 20;
+
+    c.strokeStyle = "black";
+    c.beginPath();
+    c.moveTo(x, y-23);
+    c.lineTo(x, y-17);
+    c.stroke();
+
+    if(rot == 0)
+	return;
+
+    c.beginPath();
+    c.arc(x, y, radius, -Math.PI/2, -(rot+1) * Math.PI/2, true);
+    c.stroke();
+
+    var head_length = 8;
+    var angle = rot * Math.PI/2;
+    if(rot == 2)
+	angle = 0;
+    var head_x = x + radius * Math.cos(-(rot+1) * Math.PI/2);
+    var head_y = y + radius * Math.sin(-(rot+1) * Math.PI/2);
+
+    c.beginPath();
+    c.moveTo(head_x, head_y);
+    c.lineTo(head_x - head_length*Math.cos(angle-Math.PI/6), head_y - head_length*Math.sin(angle-Math.PI/6));
+    c.moveTo(head_x, head_y);
+    c.lineTo(head_x - head_length*Math.cos(angle+Math.PI/6), head_y - head_length*Math.sin(angle+Math.PI/6));
     c.stroke();
 }

@@ -211,7 +211,7 @@ function launch() {
     x = Math.floor(Math.random() * (end - start - 1)) + start;
     y = -2;
 
-    console.log("launching with x = " + x + " and y = " + y);
+    on_launch();
 }
 
 function is_game_over() {
