@@ -110,40 +110,37 @@ function draw_square(c, x, y, color) {
 function calculate_squares(rot, m) {
     var ret = [];
 
-    for(var i = 0; i < bricks[m].length; i++) {
-	for(var j = 0; j < bricks[m][0].length; j++) {
-	    if(bricks[m][i][j] == 1) {
-		k = i - center[m][0];
-		l = j - center[m][1];
+    for(var i = 0; i < bricks[m].length; i++)
+	for(var j = 0; j < bricks[m][0].length; j++)
+	    if(bricks[m][i][j] == 1)
+		ret.push(rotate(rot, i - center[m][0], j - center[m][1]));
+    return ret;
+}
 
-		switch(rot) {
-		case 0:
-		    p = k;
-		    q = l;
-		    break;
+function rotate(rot, x, y) {
+    switch(rot) {
+    case 0:
+	p = x;
+	q = y;
+	break;
 
-		case 1:
-		    p = l;
-		    q = -k;
-		    break;
+    case 1:
+	p = y;
+	q = -x;
+	break;
 
-		case 2:
-		    p = -k;
-		    q = -l;
-		    break;
+    case 2:
+	p = -x;
+	q = -y;
+	break;
 
-		case 3:
-		    p = -l;
-		    q = k;
-		    break;
-		}
-
-		ret.push([p, q]);
-	    }
-	}
+    case 3:
+	p = -y;
+	q = x;
+	break;
     }
 
-    return ret;
+    return [p, q];
 }
 
 function move() {
