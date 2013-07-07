@@ -5,6 +5,7 @@ var rotated_x = 200;
 var rotated_y = 100;
 
 var selected = 0;
+var canvas;
 
 
 function on_launch() {
@@ -101,3 +102,68 @@ function draw_arc_arrow(c, x, y, rot) {
     c.lineTo(head_x - head_length*Math.cos(angle+Math.PI/6), head_y - head_length*Math.sin(angle+Math.PI/6));
     c.stroke();
 }
+
+function click_inside_square(x, y, offset_x, offset_y, square) {
+    if((x >= offset_x + square[0] * width) &&
+       (y >= offset_y + square[1] * height) &&
+       (x < offset_x + (square[0]+1) * width) &&
+       (y < offset_y + (square[1]+1) * height))
+	return true;
+    else
+	return false;
+}
+
+function click_select_square(x, y) {
+    var change = false;
+    var b = calculate_squares(0, type);
+
+    for(var i = 0; i < b.length; i++) {
+	if(click_inside_square(x, y, original_x, original_y, b[i])) {
+	    selected = i;
+	    change = true;
+	    break;
+	}
+    }
+
+    for(var i = 0; i < squares.length; i++) {
+	if(click_inside_square(x, y, rotated_x, rotated_y, squares[i])) {
+	    selected = i;
+	    change = true;
+	    break;
+	}
+    }
+
+    if(change)
+	draw();
+}
+
+function canvas_on_click(e) {
+    var cursor = get_cursor_position(e);
+    var x = cursor[0];
+    var y = cursor[1];
+
+    click_select_square(x, y);
+}
+
+function get_cursor_position(e) {
+    var x;
+    var y;
+    if (e.pageX || e.pageY) {
+      x = e.pageX;
+      y = e.pageY;
+    }
+    else {
+      x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+      y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+
+    x -= canvas.offsetLeft;
+    y -= canvas.offsetTop;
+
+    return [x, y];
+}
+
+$(function() {
+    canvas = document.getElementById('canvas2');
+    canvas.addEventListener("click", canvas_on_click, false);
+});
