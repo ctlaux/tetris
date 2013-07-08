@@ -57,7 +57,22 @@ function draw_rotation() {
 	if((red[0]-blue[0]) != 0 || (red[1]-blue[1]) != 0)
 	    draw_arrow(c, x1 + blue[0] * width, y1 + blue[1] * height, x1 + red[0] * width, y1 + red[1] * height, "red");
 
-	draw_arc_arrow(c, 150, 50, rot)
+	var start_rot = 0;
+	var end_rot = 0;
+
+	if(b[selected][0] != 0)
+	    start_rot = get_rotation(b[selected][0], 0);
+	else if(b[selected][1] != 0)
+	    start_rot = get_rotation(0, b[selected][1]);
+
+	draw_arc_arrow(c, 150, 50, start_rot, (start_rot + rot) % 4);
+
+	c.beginPath();
+	c.fillStyle = "black";
+	c.font = "12pt Arial";
+	c.textAlign = "center";
+	c.textBaseline = "middle";
+	c.fillText(rot.toString(), 150, 50);
     }
 }
 
@@ -75,28 +90,21 @@ function draw_arrow(c, from_x, from_y, to_x, to_y, color) {
     c.stroke();
 }
 
-function draw_arc_arrow(c, x, y, rot) {
+function draw_arc_arrow(c, x, y, start_rot, end_rot) {
     var radius = 20;
+
+    if(start_rot == end_rot)
+	return;
 
     c.strokeStyle = "black";
     c.beginPath();
-    c.moveTo(x, y-23);
-    c.lineTo(x, y-17);
-    c.stroke();
-
-    if(rot == 0)
-	return;
-
-    c.beginPath();
-    c.arc(x, y, radius, -Math.PI/2, -(rot+1) * Math.PI/2, true);
+    c.arc(x, y, radius, -(start_rot+1) * Math.PI/2, -(end_rot+1) * Math.PI/2, true);
     c.stroke();
 
     var head_length = 8;
-    var angle = rot * Math.PI/2;
-    if(rot == 2)
-	angle = 0;
-    var head_x = x + radius * Math.cos(-(rot+1) * Math.PI/2);
-    var head_y = y + radius * Math.sin(-(rot+1) * Math.PI/2);
+    var angle = -((end_rot+2) % 4) * Math.PI/2;
+    var head_x = x + radius * Math.cos(-(end_rot+1) * Math.PI/2);
+    var head_y = y + radius * Math.sin(-(end_rot+1) * Math.PI/2);
 
     c.beginPath();
     c.moveTo(head_x, head_y);
@@ -104,6 +112,17 @@ function draw_arc_arrow(c, x, y, rot) {
     c.moveTo(head_x, head_y);
     c.lineTo(head_x - head_length*Math.cos(angle+Math.PI/6), head_y - head_length*Math.sin(angle+Math.PI/6));
     c.stroke();
+}
+
+function get_rotation(x, y) {
+    if(x > 0 && y == 0)
+	return 3;
+    if(x < 0 && y == 0)
+	return 1;
+    if(x == 0 && y > 0)
+	return 2;
+    if(x == 0 && y < 0)
+	return 0;
 }
 
 function click_inside_square(x, y, offset_x, offset_y, square) {
