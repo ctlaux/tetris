@@ -14,7 +14,8 @@ var bricks = [[[1, 1, 1],
 	      [[1, 1, 1, 1]],
 	      [[1, 1],
 	       [1, 1]]];
-var center = [[0, 1], [1, 1], [0, 1], [0, 1], [1, 1], [0, 1], [-1, -1]];
+var center = [[0, 1], [1, 1], [0, 1], [0, 1], [1, 1], [0, 1], [0, 0]];
+var rotates = [true, true, true, true, true, true, false];
 
 var field_width = 10;
 var field_height = 30;
@@ -243,7 +244,7 @@ function new_game() {
 }
 
 keypress.combo("up", function() {
-    if(center[type][0] != -1) {
+    if(rotates[type]) {
 	rot++;
 	if(rot == 4)
 	    rot = 0;

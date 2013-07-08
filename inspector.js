@@ -22,7 +22,8 @@ function draw_rotation() {
     var b = calculate_squares(0, type);
     c.fillStyle = "rgb(200, 200, 250)";
     c.fillRect(original_x + b[selected][0] * width, original_y + b[selected][1] * height, width, height);
-    c.fillRect(rotated_x + squares[selected][0] * width, rotated_y + squares[selected][1] * height, width, height);
+    if(rotates[type])
+	c.fillRect(rotated_x + squares[selected][0] * width, rotated_y + squares[selected][1] * height, width, height);
 
     for(var i = 0; i < b.length; i++) {
 	c.beginPath();
@@ -31,31 +32,33 @@ function draw_rotation() {
 	c.stroke();
     }
 
-    for(var i = 0; i < squares.length; i++) {
-	c.beginPath();
-	c.strokeStyle = "grey";
-	c.rect(rotated_x + squares[i][0] * width, rotated_y + squares[i][1] * height, width, height);
-	c.stroke();
+    if(rotates[type]) {
+	for(var i = 0; i < squares.length; i++) {
+	    c.beginPath();
+	    c.strokeStyle = "grey";
+	    c.rect(rotated_x + squares[i][0] * width, rotated_y + squares[i][1] * height, width, height);
+	    c.stroke();
+	}
+
+	var x1 = original_x + width/2;
+	var y1 = original_y + height/2;
+	if(b[selected][0] != 0)
+	    draw_arrow(c, x1, y1, x1 + b[selected][0] * width, y1, "blue");
+	if(b[selected][1] != 0)
+	    draw_arrow(c, x1 + b[selected][0] * width, y1, x1 + b[selected][0] * width, y1 + b[selected][1] * height, "red");
+
+	blue = rotate(rot, b[selected][0], 0);
+	red = rotate(rot, b[selected][0], b[selected][1]);
+
+	x1 = rotated_x + width/2;
+	y1 = rotated_y + height/2;
+	if(blue[0] != 0 || blue[1] != 0)
+	    draw_arrow(c, x1, y1, x1 + blue[0] * width, y1 + blue[1] * height, "blue");
+	if((red[0]-blue[0]) != 0 || (red[1]-blue[1]) != 0)
+	    draw_arrow(c, x1 + blue[0] * width, y1 + blue[1] * height, x1 + red[0] * width, y1 + red[1] * height, "red");
+
+	draw_arc_arrow(c, 150, 50, rot)
     }
-
-    var x1 = original_x + width/2;
-    var y1 = original_y + height/2;
-    if(b[selected][0] != 0)
-	draw_arrow(c, x1, y1, x1 + b[selected][0] * width, y1, "blue");
-    if(b[selected][1] != 0)
-	draw_arrow(c, x1 + b[selected][0] * width, y1, x1 + b[selected][0] * width, y1 + b[selected][1] * height, "red");
-
-    blue = rotate(rot, b[selected][0], 0);
-    red = rotate(rot, b[selected][0], b[selected][1]);
-
-    x1 = rotated_x + width/2;
-    y1 = rotated_y + height/2;
-    if(blue[0] != 0 || blue[1] != 0)
-	draw_arrow(c, x1, y1, x1 + blue[0] * width, y1 + blue[1] * height, "blue");
-    if((red[0]-blue[0]) != 0 || (red[1]-blue[1]) != 0)
-	draw_arrow(c, x1 + blue[0] * width, y1 + blue[1] * height, x1 + red[0] * width, y1 + red[1] * height, "red");
-
-    draw_arc_arrow(c, 150, 50, rot)
 }
 
 function draw_arrow(c, from_x, from_y, to_x, to_y, color) {
