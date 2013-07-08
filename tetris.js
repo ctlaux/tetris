@@ -32,6 +32,7 @@ var type = 0;
 var color = 2;
 
 var points = 0;
+var paused = false;
 
 var interval_id = 0;
 
@@ -145,6 +146,9 @@ function rotate(rot, x, y) {
 }
 
 function move() {
+    if(paused)
+	return;
+
     y++;
 
     var stopped = false;
@@ -224,6 +228,7 @@ function is_game_over() {
 
     if(over) {
 	clearInterval(interval_id);
+	$("#message").text("Game Over!");
 	$("#message").show();
 	return true;
     }
@@ -279,6 +284,19 @@ keypress.combo("left", function() {
     if(move) {
 	x--;
 	draw();
+    }
+});
+
+keypress.combo("p", function() {
+    if(paused) {
+	paused = false;
+	$("#message").text("");
+	$("#message").show();
+    }
+    else {
+	paused = true;
+	$("#message").text("Paused");
+	$("#message").show();
     }
 });
 
