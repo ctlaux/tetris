@@ -146,13 +146,20 @@ function rotate(rot, x, y) {
     return [p, q];
 }
 
-function move() {
+function move_down() {
     if(paused)
 	return;
 
     y++;
 
+    check_if_stopped();
+
+    draw();
+}
+
+function check_if_stopped() {
     var stopped = false;
+
     for(var i = 0; i < squares.length; i++) {
 	if(y + squares[i][1] == field_height - 1)
 	    stopped = true;
@@ -172,8 +179,6 @@ function move() {
 	if(!is_game_over())
 	    launch();
     }
-
-    draw();
 }
 
 function can_rotate(new_rot) {
@@ -259,7 +264,7 @@ function new_game() {
     launch();
     if (interval_id != 0)
 	clearInterval(interval_id);
-    interval_id = setInterval(move, 1000);
+    interval_id = setInterval(move_down, 1000);
     draw();
 }
 
@@ -269,12 +274,13 @@ keypress.combo("up", function() {
 	if(rot == 4)
 	    rot = 0;
 	squares = calculate_squares(rot, type);
+	check_if_stopped();
 	draw();
     }
 });
 
 keypress.combo("down", function() {
-    move();
+    move_down();
 });
 
 keypress.combo("right", function() {
@@ -286,6 +292,7 @@ keypress.combo("right", function() {
 
     if(move) {
 	x++;
+	check_if_stopped();
 	draw();
     }
 });
@@ -298,6 +305,7 @@ keypress.combo("left", function() {
 
     if(move) {
 	x--;
+	check_if_stopped();
 	draw();
     }
 });
