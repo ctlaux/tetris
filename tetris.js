@@ -48,12 +48,12 @@ function setup() {
 
 function draw() {
     var canvas = document.getElementById('canvas1');
-    canvas.width = field_width * width;
+    canvas.width = field_width * width + 20;
     canvas.height = field_height * height;
 
     var c = canvas.getContext('2d');
     c.strokeStyle = "black";
-    c.rect(0, 0, canvas.width, canvas.height);
+    c.rect(0, 0, field_width * width, field_height * height);
     c.stroke();
 
     for(var i = 0; i < field_width; i++) {
@@ -67,6 +67,7 @@ function draw() {
     draw_brick(c, x, y, rot, type);
 
     draw_rotation();
+    print_row_counts();
 }
 
 function draw_brick(c, center_x, center_y) {

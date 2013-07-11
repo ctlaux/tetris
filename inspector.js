@@ -148,6 +148,25 @@ function print_coordinate_mapping(c) {
     }
 }
 
+function print_row_counts() {
+    var canvas = document.getElementById('canvas1');
+    var c = canvas.getContext('2d');
+
+    c.beginPath();
+    c.font = "12pt Arial";
+    c.textAlign = "start";
+    c.textBaseline = "alphabetic";
+    c.fillStyle = "black";
+
+    for(var j = 0; j < field_height; j++) {
+	var count = 0;
+	for(var i = 0; i < field_width; i++)
+	    if(field[i][j] != -1)
+		count++;
+	c.fillText(count.toString(), canvas.width - 15, j*height + 15);
+    }
+}
+
 function click_inside_square(x, y, offset_x, offset_y, square) {
     if((x >= offset_x + square[0] * width) &&
        (y >= offset_y + square[1] * height) &&
