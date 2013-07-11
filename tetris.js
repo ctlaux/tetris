@@ -176,6 +176,20 @@ function move() {
     draw();
 }
 
+function can_rotate(new_rot) {
+    var can_rotate = true;
+    var s = calculate_squares(new_rot, type);
+
+    for(var i = 0; i < s.length; i++) {
+	if(field[x + s[i][0]][y + s[i][1]] != -1)
+	    can_rotate = false;
+	if(x + s[i][0] < 0 || x + s[i][1] >= field_width || y + s[i][1] >= field_height)
+	    can_rotate = false;
+    }
+
+    return can_rotate;
+}
+
 function remove_full_lines() {
     for(var j = 0; j < field_height; j++) {
 	full = true;
@@ -250,7 +264,7 @@ function new_game() {
 }
 
 keypress.combo("up", function() {
-    if(rotates[type]) {
+    if(rotates[type] && can_rotate((rot+1) % 4)) {
 	rot++;
 	if(rot == 4)
 	    rot = 0;
