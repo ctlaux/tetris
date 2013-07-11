@@ -3,6 +3,8 @@ var original_x = 100;
 var original_y = 100;
 var rotated_x = 200;
 var rotated_y = 100;
+var text_x = 100;
+var text_y = 180;
 
 var selected = 0;
 var canvas;
@@ -73,7 +75,9 @@ function draw_rotation() {
 	c.textAlign = "center";
 	c.textBaseline = "middle";
 	c.fillText(rot.toString(), 150, 50);
-    }
+
+	print_coordinate_mapping(c);
+    }    
 }
 
 function draw_arrow(c, from_x, from_y, to_x, to_y, color) {
@@ -123,6 +127,25 @@ function get_rotation(x, y) {
 	return 2;
     if(x == 0 && y < 0)
 	return 0;
+}
+
+function print_coordinate_mapping(c) {
+    c.beginPath();
+    c.font = "12pt Arial";
+    c.textAlign = "start";
+    c.textBaseline = "alphabetic";
+
+    var b = calculate_squares(0, type);
+
+    for(var i = 0; i < b.length; i++) {
+	if(i == selected)
+	    c.fillStyle = "rgb(150, 150, 255)";
+	else
+	    c.fillStyle = "black";
+	c.fillText("(" + b[i][0] + "," + b[i][1] + ")", text_x, text_y + 20*i);
+	c.fillText("→", text_x + 50, text_y + 20*i);
+	c.fillText("(" + squares[i][0] + "," + squares[i][1] + ")", text_x + 80, text_y + 20*i);
+    }
 }
 
 function click_inside_square(x, y, offset_x, offset_y, square) {
