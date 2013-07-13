@@ -288,6 +288,8 @@ keypress.combo("right", function() {
     for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == field_width - 1)
 	    move = false;
+	if(field[x + squares[i][0] + 1][y + squares[i][1]] != -1)
+	    move = false;
     }
 
     if(move) {
@@ -299,9 +301,12 @@ keypress.combo("right", function() {
 
 keypress.combo("left", function() {
     var move = true;
-    for(var i = 0; i < squares.length; i++)
+    for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == 0)
 	    move = false;
+	if(field[x + squares[i][0] - 1][y + squares[i][1]] != -1)
+	    move = false;
+    }
 
     if(move) {
 	x--;
