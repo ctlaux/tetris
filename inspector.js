@@ -40,7 +40,7 @@ function draw_inspector() {
 	print_coordinate_mapping(c);
     }
 
-    print_row_counts();
+    print_row_counts(c, 400, 230);
 }
 
 function draw_rotation(c) {
@@ -257,10 +257,7 @@ function draw_field_array(c, start_x, start_y) {
     c.stroke();
 }
 
-function print_row_counts() {
-    var canvas = document.getElementById('canvas1');
-    var c = canvas.getContext('2d');
-
+function print_row_counts(c, start_x, start_y) {
     c.beginPath();
     c.font = "12pt Arial";
     c.textAlign = "start";
@@ -272,7 +269,7 @@ function print_row_counts() {
 	for(var i = 0; i < field_width; i++)
 	    if(field[i][j] != -1)
 		count++;
-	c.fillText(count.toString(), canvas.width - 15, j*height + 15);
+	c.fillText(count.toString(), start_x + (field_width + 1)*width + 5, start_y + (j + 1)*height + 15);
     }
 }
 

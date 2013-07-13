@@ -48,7 +48,7 @@ function setup() {
 
 function draw() {
     var canvas = document.getElementById('canvas1');
-    canvas.width = field_width * width + 20;
+    canvas.width = field_width * width;
     canvas.height = field_height * height;
 
     var c = canvas.getContext('2d');
