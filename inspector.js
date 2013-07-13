@@ -1,26 +1,49 @@
 
 var original_x = 100;
-var original_y = 100;
+var original_y = 300;
 var rotated_x = 200;
-var rotated_y = 100;
+var rotated_y = 300;
 var text_x = 100;
-var text_y = 180;
+var text_y = 380;
 
 var selected = 0;
+var selected_i = 0;
+var selected_j = 0;
 var canvas;
 
 
 function on_launch() {
-    selected = Math.floor(Math.random() * squares.length);
+    var selected = Math.floor(Math.random() * squares.length);
     while(squares[selected][0] == 0 && squares[selected][1] == 0)
 	selected = Math.floor(Math.random() * squares.length);
+    make_selection(selected);
 }
 
-function draw_rotation() {
+function make_selection(x) {
+    var b = calculate_squares(0, type);
+    selected = x;
+    selected_i = b[selected][0] + center[type][0];
+    selected_j = b[selected][1] + center[type][1];    
+}
+
+function draw_inspector() {
     var canvas = document.getElementById('canvas2');
     canvas.width = canvas.width;
     var c = canvas.getContext('2d');
+    c.globalAlpha = 1.0;
 
+    draw_bricks_array(c, 100, 50, type, selected_i, selected_j);
+    draw_field_array(c, 400, 230);
+
+    draw_rotation(c);
+    if(rotates[type]) {
+	print_coordinate_mapping(c);
+    }
+
+    print_row_counts();
+}
+
+function draw_rotation(c) {
     var b = calculate_squares(0, type);
     c.fillStyle = "rgb(200, 200, 250)";
     c.fillRect(original_x + b[selected][0] * width, original_y + b[selected][1] * height, width, height);
@@ -55,9 +78,9 @@ function draw_rotation() {
 	x1 = rotated_x + width/2;
 	y1 = rotated_y + height/2;
 	if(blue[0] != 0 || blue[1] != 0)
-	    draw_arrow(c, x1, y1, x1 + blue[0] * width, y1 + blue[1] * height, "blue");
+	    draw_arrow(c, x1, y1, x1 + blue[0] * width, y1 + blue[1] * height, "#871BE0");
 	if((red[0]-blue[0]) != 0 || (red[1]-blue[1]) != 0)
-	    draw_arrow(c, x1 + blue[0] * width, y1 + blue[1] * height, x1 + red[0] * width, y1 + red[1] * height, "red");
+	    draw_arrow(c, x1 + blue[0] * width, y1 + blue[1] * height, x1 + red[0] * width, y1 + red[1] * height, "#9BA300");
 
 	var start_rot = 0;
 	var end_rot = 0;
@@ -67,16 +90,17 @@ function draw_rotation() {
 	else if(b[selected][1] != 0)
 	    start_rot = get_rotation(0, b[selected][1]);
 
-	draw_arc_arrow(c, 150, 50, start_rot, (start_rot + rot) % 4);
+	var center_x = (original_x + rotated_x)/2;
+	var center_y = original_y - 50;
+
+	draw_arc_arrow(c, center_x, center_y, start_rot, (start_rot + rot) % 4);
 
 	c.beginPath();
 	c.fillStyle = "black";
 	c.font = "12pt Arial";
 	c.textAlign = "center";
 	c.textBaseline = "middle";
-	c.fillText(rot.toString(), 150, 50);
-
-	print_coordinate_mapping(c);
+	c.fillText(rot.toString(), center_x, center_y);
     }    
 }
 
@@ -148,6 +172,104 @@ function print_coordinate_mapping(c) {
     }
 }
 
+function draw_bricks_array(c, start_x, start_y, selected_k, selected_i, selected_j) {
+    var x = start_x;
+    var y = start_y;
+
+    c.beginPath();
+    c.strokeStyle = "grey";
+    c.rect(start_x - 2*width, start_y - 2*height, bricks.length*4*width, height);
+    c.moveTo(start_x - width, start_y - 2*height);
+    c.lineTo(start_x - width, start_y - height);
+    c.stroke();
+
+    c.font = "12pt Arial";
+    c.textAlign = "start";
+    c.textBaseline = "alphabetic";
+
+    c.fillStyle = "green";
+    c.fillText("k", start_x - width + selected_k * 4 * width + 7, start_y - height - 5);
+    c.fillStyle = "blue";
+    c.fillText("i", start_x - width + selected_k * 4 * width + (selected_i + 1) * width + 7, start_y - 5);
+    c.fillStyle = "red";
+    c.fillText("j", start_x - width + selected_k * 4 * width + 7, start_y + (selected_j + 1) * height - 5);
+
+    draw_arrow(c, start_x - 3/2*width, start_y - 3/2*height, start_x - width + selected_k * 4 * width, start_y - 3/2*height, "green");
+    draw_arrow(c, start_x + selected_k * 4 * width - 0.5*width, start_y - height/2,
+	          start_x - width + selected_k * 4 * width + (selected_i + 1) * width, start_y - height/2, "blue");
+    draw_arrow(c, start_x + selected_k * 4 * width - 0.5*width, start_y - height/2,
+	          start_x + selected_k * 4 * width - 0.5*width, start_y - height/2 + (selected_j + 0.5) * height, "red");
+
+    c.beginPath();
+    c.strokeStyle = "grey";
+
+    for(var k = 0; k < bricks.length; k++) {
+	x = start_x + k*4*width;
+	for(var i = 0; i < bricks[k].length; i++) {
+	    y = start_y;
+	    for(var j = 0; j < bricks[k][i].length; j++) {
+		if(bricks[k][i][j] == 1) {
+		    c.fillStyle = "rgb(220, 220, 220)";
+		    c.fillRect(x, y, width, height);
+		    c.rect(x, y, width, height);
+		}
+		y+= height;
+	    }
+	    x+= width;
+	}
+
+	c.rect(start_x + k*4*width - width, start_y - height, 3*width, 5*height);
+	c.moveTo(start_x + k*4*width, start_y - height);
+	c.lineTo(start_x + k*4*width, start_y + 4*height);
+
+	c.moveTo(start_x + k*4*width - width, start_y);
+	c.lineTo(start_x + k*4*width + 2*width, start_y);
+    }
+
+    c.stroke();
+}
+
+function draw_field_array(c, start_x, start_y) {
+    c.beginPath();
+    c.strokeStyle = "grey";
+    c.rect(start_x, start_y, (field_width + 1)*width, (field_height + 1)*height);
+    c.rect(start_x, start_y, width, height);
+    c.stroke();
+
+    c.font = "12pt Arial";
+    c.textAlign = "start";
+    c.textBaseline = "alphabetic";
+
+    c.fillStyle = "#00CCE3";
+    c.fillText("x", start_x + (x + 1)*width + 7, start_y + height - 5);
+    draw_arrow(c, start_x + width/2, start_y + height/2, start_x + (x + 1)*width, start_y + height/2, "#00CCE3");
+    if(y >= 0) {
+	c.fillStyle = "#005FE3";
+	c.fillText("y", start_x + 7, start_y + (y + 2)*height - 5);
+	draw_arrow(c, start_x + width/2, start_y + height/2, start_x + width/2, start_y + (y + 1)*height, "#005FE3");
+    }
+
+    c.beginPath();
+    c.strokeStyle = "grey";
+
+    c.fillStyle = "rgb(220, 220, 220)";
+    for(var i = 0; i < squares.length; i++) {
+	if(y + squares[i][1] >= 0)
+	    c.fillRect(start_x + (x + squares[i][0] + 1)*width, start_y + (y + squares[i][1] + 1)*height, width, height);
+    }
+
+    for(var i = 0; i < field_width; i++)
+	for(var j = 0; j < field_height; j++) {
+	    c.rect(start_x + width + i*width, start_y + height + j*height, width, height);
+	    if(field[i][j] != -1) {
+		c.fillStyle = "rgb(220, 220, 220)";
+		c.fillRect(start_x + width + i*width, start_y + height + j*height, width, height);
+	    }
+	}
+
+    c.stroke();
+}
+
 function print_row_counts() {
     var canvas = document.getElementById('canvas1');
     var c = canvas.getContext('2d');
@@ -183,7 +305,7 @@ function click_select_square(x, y) {
 
     for(var i = 0; i < b.length; i++) {
 	if(click_inside_square(x, y, original_x, original_y, b[i])) {
-	    selected = i;
+	    make_selection(i);
 	    change = true;
 	    break;
 	}
@@ -191,7 +313,7 @@ function click_select_square(x, y) {
 
     for(var i = 0; i < squares.length; i++) {
 	if(click_inside_square(x, y, rotated_x, rotated_y, squares[i])) {
-	    selected = i;
+	    make_selection(i);
 	    change = true;
 	    break;
 	}

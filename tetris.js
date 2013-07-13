@@ -66,8 +66,7 @@ function draw() {
 
     draw_brick(c, x, y, rot, type);
 
-    draw_rotation();
-    print_row_counts();
+    draw_inspector();
 }
 
 function draw_brick(c, center_x, center_y) {
