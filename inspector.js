@@ -202,7 +202,10 @@ function draw_bricks_array(c, start_x, start_y, selected_k, selected_i, selected
 	    y = start_y;
 	    for(var j = 0; j < bricks[k][i].length; j++) {
 		if(bricks[k][i][j] == 1) {
-		    c.fillStyle = "rgb(220, 220, 220)";
+		    if(k == type && i == selected_i && j == selected_j)
+			c.fillStyle = "rgb(200, 200, 255)";
+		    else
+			c.fillStyle = "rgb(220, 220, 220)";
 		    c.fillRect(x, y, width, height);
 		    c.rect(x, y, width, height);
 		}
@@ -239,8 +242,11 @@ function draw_field_array(c, start_x, start_y) {
     c.beginPath();
     c.strokeStyle = "grey";
 
-    c.fillStyle = "rgb(220, 220, 220)";
     for(var i = 0; i < squares.length; i++) {
+	if(i == selected)
+	    c.fillStyle = "rgb(200, 200, 255)";
+	else
+	    c.fillStyle = "rgb(220, 220, 220)";
 	if(y + squares[i][1] >= 0)
 	    c.fillRect(start_x + (x + squares[i][0] + 1)*width, start_y + (y + squares[i][1] + 1)*height, width, height);
     }
