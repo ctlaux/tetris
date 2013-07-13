@@ -188,7 +188,7 @@ function can_rotate(new_rot) {
     for(var i = 0; i < s.length; i++) {
 	if(x + s[i][0] < 0 || x + s[i][0] >= field_width || y + s[i][1] >= field_height)
 	    can_rotate = false;
-	else if(field[x + s[i][0]][y + s[i][1]] != -1)
+	else if(y + s[i][1] >= 0 && field[x + s[i][0]][y + s[i][1]] != -1)
 	    can_rotate = false;
     }
 
@@ -288,7 +288,7 @@ keypress.combo("right", function() {
     for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == field_width - 1)
 	    move = false;
-	else if(field[x + squares[i][0] + 1][y + squares[i][1]] != -1)
+	else if(y + squares[i][1] >= 0 && field[x + squares[i][0] + 1][y + squares[i][1]] != -1)
 	    move = false;
     }
 
@@ -304,7 +304,7 @@ keypress.combo("left", function() {
     for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == 0)
 	    move = false;
-	else if(field[x + squares[i][0] - 1][y + squares[i][1]] != -1)
+	else if(y + squares[i][1] >= 0 && field[x + squares[i][0] - 1][y + squares[i][1]] != -1)
 	    move = false;
     }
 
