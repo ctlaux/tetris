@@ -186,9 +186,9 @@ function can_rotate(new_rot) {
     var s = calculate_squares(new_rot, type);
 
     for(var i = 0; i < s.length; i++) {
-	if(field[x + s[i][0]][y + s[i][1]] != -1)
+	if(x + s[i][0] < 0 || x + s[i][0] >= field_width || y + s[i][1] >= field_height)
 	    can_rotate = false;
-	if(x + s[i][0] < 0 || x + s[i][1] >= field_width || y + s[i][1] >= field_height)
+	else if(field[x + s[i][0]][y + s[i][1]] != -1)
 	    can_rotate = false;
     }
 
@@ -288,7 +288,7 @@ keypress.combo("right", function() {
     for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == field_width - 1)
 	    move = false;
-	if(field[x + squares[i][0] + 1][y + squares[i][1]] != -1)
+	else if(field[x + squares[i][0] + 1][y + squares[i][1]] != -1)
 	    move = false;
     }
 
@@ -304,7 +304,7 @@ keypress.combo("left", function() {
     for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == 0)
 	    move = false;
-	if(field[x + squares[i][0] - 1][y + squares[i][1]] != -1)
+	else if(field[x + squares[i][0] - 1][y + squares[i][1]] != -1)
 	    move = false;
     }
 
