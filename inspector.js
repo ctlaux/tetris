@@ -176,13 +176,6 @@ function draw_bricks_array(c, start_x, start_y, selected_k, selected_i, selected
     var x = start_x;
     var y = start_y;
 
-    c.beginPath();
-    c.strokeStyle = "grey";
-    c.rect(start_x - 2*width, start_y - 2*height, bricks.length*4*width, height);
-    c.moveTo(start_x - width, start_y - 2*height);
-    c.lineTo(start_x - width, start_y - height);
-    c.stroke();
-
     c.font = "12pt Arial";
     c.textAlign = "start";
     c.textBaseline = "alphabetic";
@@ -230,12 +223,6 @@ function draw_bricks_array(c, start_x, start_y, selected_k, selected_i, selected
 }
 
 function draw_field_array(c, start_x, start_y) {
-    c.beginPath();
-    c.strokeStyle = "grey";
-    c.rect(start_x, start_y, (field_width + 1)*width, (field_height + 1)*height);
-    c.rect(start_x, start_y, width, height);
-    c.stroke();
-
     c.font = "12pt Arial";
     c.textAlign = "start";
     c.textBaseline = "alphabetic";
