@@ -5,6 +5,10 @@ var rotated_x = 200;
 var rotated_y = 300;
 var text_x = 100;
 var text_y = 380;
+var bricks_x = 100;
+var bricks_y = 50;
+var field_x = 400;
+var field_y = 230;
 
 var selected = 0;
 var selected_i = 0;
@@ -32,15 +36,15 @@ function draw_inspector() {
     var c = canvas.getContext('2d');
     c.globalAlpha = 1.0;
 
-    draw_bricks_array(c, 100, 50, type, selected_i, selected_j);
-    draw_field_array(c, 400, 230);
+    draw_bricks_array(c, bricks_x, bricks_y, type, selected_i, selected_j);
+    draw_field_array(c, field_x, field_y);
 
     draw_rotation(c);
     if(rotates[type]) {
 	print_coordinate_mapping(c);
     }
 
-    print_row_counts(c, 400, 230);
+    print_row_counts(c, field_x, field_y);
 }
 
 function draw_rotation(c) {
@@ -289,12 +293,15 @@ function click_inside_square(x, y, offset_x, offset_y, square) {
 	return false;
 }
 
-function click_select_square(x, y) {
+function click_select_square(mouse_x, mouse_y) {
     var change = false;
     var b = calculate_squares(0, type);
 
     for(var i = 0; i < b.length; i++) {
-	if(click_inside_square(x, y, original_x, original_y, b[i])) {
+	if(click_inside_square(mouse_x, mouse_y, original_x, original_y, b[i]) ||
+	   click_inside_square(mouse_x, mouse_y,
+			       bricks_x + 4 * type * width + center[type][0] * width,
+			       bricks_y + center[type][1] * height, b[i])) {
 	    make_selection(i);
 	    change = true;
 	    break;
@@ -302,7 +309,8 @@ function click_select_square(x, y) {
     }
 
     for(var i = 0; i < squares.length; i++) {
-	if(click_inside_square(x, y, rotated_x, rotated_y, squares[i])) {
+	if(click_inside_square(mouse_x, mouse_y, rotated_x, rotated_y, squares[i]) ||
+	   click_inside_square(mouse_x, mouse_y, field_x + (x+1) * width, field_y + (y+1) * height, squares[i])) {
 	    make_selection(i);
 	    change = true;
 	    break;
