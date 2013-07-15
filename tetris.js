@@ -221,7 +221,10 @@ function set_points() {
 function launch() {
     color = Math.floor(Math.random() * colors.length);
     type = Math.floor(Math.random() * bricks.length);
-    rot = Math.floor(Math.random() * 4);
+    if(rotates[type])
+	rot = Math.floor(Math.random() * 4);
+    else
+	rot = 0;
 
     var start = 0;
     var end = field_width;
