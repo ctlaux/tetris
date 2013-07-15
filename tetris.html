@@ -3,20 +3,78 @@
   <head>
     <title>Tetris</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <style type="text/css">
+      #left {
+        position: absolute;
+        
+      }
+
+      #header {
+        width: 200px;
+      }
+
+      #score {
+        float: right;
+      }
+
+      #footer {
+        width: 200px;
+      }
+
+      #message {
+        float: left;
+        display: none;
+      }
+
+      #newgame {
+        float: right;
+      }
+
+      #top {
+        position: absolute;
+        margin-left: 220px;
+        margin-top: 0px;
+      }
+
+      #middle {
+        position: absolute;
+        margin-left: 220px;
+        margin-top: 250px;
+      }
+
+      #right {
+        position: absolute;
+        margin-left: 850px;
+        margin-top: 250px;
+      }
+    </style>
   </head>
   <body>
-    <center>
-      <div style="float:left;">
-	<div style="width:200px;"><span style="float:left;">Points:</span><span id="score" style="float:right;">0</span></div>
-	<canvas id="canvas1" width="200" height="600"></canvas>
-	<div style="width:200px;">
-	  <span id="message" style="float:left; display:none;">Game Over!</span>
-	  <span id="newgame" style="float:right;"><input type="button" value="New Game" onclick="new_game();"></input></span>
+    <div>
+      <div>
+	<div id="left">
+	  <div id="header"><span>Points:</span><span id="score">0</span></div>
+	  <canvas id="canvas1" width="200" height="600"></canvas>
+	  <div id="footer">
+	    <span id="message">Game Over!</span>
+	    <span id="newgame"><input type="button" value="New Game" onclick="new_game();"></input></span>
+	  </div>
+	</div>
+
+	<div id="top">
+	  <canvas id="canvas2" width="900" height="250"></canvas>
 	</div>
       </div>
-      &nbsp;<br />
-      <canvas id="canvas2" style="float:left;" width="800" height="900"></canvas>
-    </center>
+
+      <div id="middle">
+	<code>x y z</code>
+      </div>
+
+      <div id="right">
+	<canvas id="canvas3" width="240" height="650"></canvas>
+      </div>
+    </div>
+
     <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="keypress.js"></script>
     <script type="text/javascript" src="tetris.js"></script>

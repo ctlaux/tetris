@@ -1,19 +1,18 @@
 
-var original_x = 100;
-var original_y = 300;
-var rotated_x = 200;
-var rotated_y = 300;
-var text_x = 100;
-var text_y = 380;
-var bricks_x = 100;
+var original_x = 650;
+var original_y = 100;
+var rotated_x = 750;
+var rotated_y = 100;
+var text_x = 650;
+var text_y = 180;
+var bricks_x = 50;
 var bricks_y = 50;
-var field_x = 400;
-var field_y = 230;
+var field_x = 0;
+var field_y = 0;
 
 var selected = 0;
 var selected_i = 0;
 var selected_j = 0;
-var canvas;
 
 
 function on_launch() {
@@ -31,19 +30,24 @@ function make_selection(x) {
 }
 
 function draw_inspector() {
-    var canvas = document.getElementById('canvas2');
-    canvas.width = canvas.width;
-    var c = canvas.getContext('2d');
+    var canvas2 = document.getElementById('canvas2');
+    canvas2.width = canvas2.width;
+    var c = canvas2.getContext('2d');
     c.globalAlpha = 1.0;
 
     draw_bricks_array(c, bricks_x, bricks_y, type, selected_i, selected_j);
-    draw_field_array(c, field_x, field_y);
 
     draw_rotation(c);
     if(rotates[type]) {
 	print_coordinate_mapping(c);
     }
 
+    var canvas3 = document.getElementById('canvas3');
+    canvas3.width = canvas3.width;
+    c = canvas3.getContext('2d');
+    c.globalAlpha = 1.0;
+
+    draw_field_array(c, field_x, field_y);
     print_row_counts(c, field_x, field_y);
 }
 
