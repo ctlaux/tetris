@@ -87,19 +87,16 @@ function draw_rotation(c) {
 	    var y1 = original_y + height/2;
 
 	    if(b[selected][0] != 0)
-		draw_arrow(c, x1, y1, x1 + b[selected][0] * width, y1, "blue");
+		draw_arrow(c, x1, y1, x1 + b[selected][0] * width, y1, "#00C2CC");
 	    if(b[selected][1] != 0)
-		draw_arrow(c, x1 + b[selected][0] * width, y1, x1 + b[selected][0] * width, y1 + b[selected][1] * height, "red");
-
-	    blue = rotate(rot, b[selected][0], 0);
-	    red = rotate(rot, b[selected][0], b[selected][1]);
+		draw_arrow(c, x1 + b[selected][0] * width, y1, x1 + b[selected][0] * width, y1 + b[selected][1] * height, "#76BF00");
 
 	    x1 = rotated_x + width/2;
 	    y1 = rotated_y + height/2;
-	    if(blue[0] != 0 || blue[1] != 0)
-		draw_arrow(c, x1, y1, x1 + blue[0] * width, y1 + blue[1] * height, "#871BE0");
-	    if((red[0]-blue[0]) != 0 || (red[1]-blue[1]) != 0)
-		draw_arrow(c, x1 + blue[0] * width, y1 + blue[1] * height, x1 + red[0] * width, y1 + red[1] * height, "#9BA300");
+	    if(squares[selected][0] != 0)
+		draw_arrow(c, x1, y1, x1 + squares[selected][0] * width, y1, "#871BE0");
+	    if(squares[selected][1] != 0)
+		draw_arrow(c, x1 + squares[selected][0] * width, y1, x1 + squares[selected][0] * width, y1 + squares[selected][1] * height, "#9BA300");
 	}
 
 	var start_rot = 0;
@@ -318,6 +315,15 @@ function draw_field_array(c, start_x, start_y) {
 	}
 
     c.stroke();
+
+    if(arrows[selected_code]["field_squares"]) {
+	var x1 = start_x + (x+1)*width + width/2;
+	var y1 = start_y + (y+1)*height + height/2;
+	if(squares[selected][0] != 0 && y > -1)
+	    draw_arrow(c, x1, y1, x1 + squares[selected][0] * width, y1, "#871BE0");
+	if(squares[selected][1] != 0 && y + squares[selected][1] > -1 && y > -1)
+	    draw_arrow(c, x1 + squares[selected][0] * width, y1, x1 + squares[selected][0] * width, y1 + squares[selected][1] * height, "#9BA300");
+    }
 }
 
 function print_row_counts(c, start_x, start_y) {
