@@ -6,7 +6,6 @@
     <style type="text/css">
       #left {
         position: absolute;
-        
       }
 
       #header {
@@ -30,7 +29,7 @@
         float: right;
       }
 
-      #top {
+      #canvas2 {
         position: absolute;
         margin-left: 220px;
         margin-top: 0px;
@@ -42,7 +41,14 @@
         margin-top: 250px;
       }
 
-      #right {
+      #code {
+        border: 1px black solid;
+        padding: 10px;
+        width: 500px;
+        height: 500px;
+      }
+
+      #canvas3 {
         position: absolute;
         margin-left: 850px;
         margin-top: 250px;
@@ -61,18 +67,33 @@
 	  </div>
 	</div>
 
-	<div id="top">
-	  <canvas id="canvas2" width="900" height="250"></canvas>
-	</div>
+	<canvas id="canvas2" width="900" height="250"></canvas>
       </div>
 
       <div id="middle">
-	<code>x y z</code>
+	<div id="code">
+	  <code><pre style="color:grey;">
+var stopped = false;
+
+for(var i = 0; i < squares.length; i++) {
+  if(<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span> == field_height - 1)
+    stopped = true;
+  if(<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span> >= 0) {
+    if(field[<span style="color:#00CCE3;">x</span> + <span style="color:#871BE0;">squares[i][0]</span>][<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span> + 1] != -1)
+      stopped = true;
+    }
+}
+
+if(stopped) {
+  for(var i = 0; i < squares.length; i++) {
+    field[<span style="color:#00CCE3;">x</span> + <span style="color:#871BE0;">squares[i][0]</span>][<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span>] = color;
+  }
+}
+	  </pre></code>
+	</div>
       </div>
 
-      <div id="right">
-	<canvas id="canvas3" width="240" height="650"></canvas>
-      </div>
+      <canvas id="canvas3" width="240" height="650"></canvas>
     </div>
 
     <script type="text/javascript" src="jquery-1.7.2.min.js"></script>

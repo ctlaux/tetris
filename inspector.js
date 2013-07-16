@@ -297,11 +297,15 @@ function click_inside_square(x, y, offset_x, offset_y, square) {
 	return false;
 }
 
-function click_select_square(mouse_x, mouse_y) {
+function click_select_square_canvas2(e) {
+    var canvas2 = document.getElementById('canvas2');
+    var cursor = get_cursor_position(canvas2, e);
+    var mouse_x = cursor[0];
+    var mouse_y = cursor[1];
     var change = false;
     var b = calculate_squares(0, type);
 
-    for(var i = 0; i < b.length; i++) {
+    for(var i = 0; i < b.length; i++)
 	if(click_inside_square(mouse_x, mouse_y, original_x, original_y, b[i]) ||
 	   click_inside_square(mouse_x, mouse_y,
 			       bricks_x + 4 * type * width + center[type][0] * width,
@@ -310,30 +314,34 @@ function click_select_square(mouse_x, mouse_y) {
 	    change = true;
 	    break;
 	}
-    }
 
-    for(var i = 0; i < squares.length; i++) {
-	if(click_inside_square(mouse_x, mouse_y, rotated_x, rotated_y, squares[i]) ||
-	   click_inside_square(mouse_x, mouse_y, field_x + (x+1) * width, field_y + (y+1) * height, squares[i])) {
+    for(var i = 0; i < squares.length; i++)
+	if(click_inside_square(mouse_x, mouse_y, rotated_x, rotated_y, squares[i])) {
 	    make_selection(i);
 	    change = true;
 	    break;
 	}
-    }
 
     if(change)
 	draw();
 }
 
-function canvas_on_click(e) {
-    var cursor = get_cursor_position(e);
-    var x = cursor[0];
-    var y = cursor[1];
+function click_select_square_canvas3(e) {
+    var canvas3 = document.getElementById('canvas3');
+    var cursor = get_cursor_position(canvas3, e);
+    var mouse_x = cursor[0];
+    var mouse_y = cursor[1];
+    var change = false;
 
-    click_select_square(x, y);
+    for(var i = 0; i < squares.length; i++)
+       if(click_inside_square(mouse_x, mouse_y, field_x + (x+1) * width, field_y + (y+1) * height, squares[i])) {
+	   make_selection(i);
+	   draw();
+	   break;
+       }
 }
 
-function get_cursor_position(e) {
+function get_cursor_position(canvas, e) {
     var x;
     var y;
     if (e.pageX || e.pageY) {
@@ -352,6 +360,9 @@ function get_cursor_position(e) {
 }
 
 $(function() {
-    canvas = document.getElementById('canvas2');
-    canvas.addEventListener("click", canvas_on_click, false);
+    var canvas2 = document.getElementById('canvas2');
+    canvas2.addEventListener("click", click_select_square_canvas2, false);
+
+    var canvas3 = document.getElementById('canvas3');
+    canvas3.addEventListener("click", click_select_square_canvas3, false);
 });
