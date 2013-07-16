@@ -7,6 +7,8 @@ var text_x = 650;
 var text_y = 180;
 var bricks_x = 50;
 var bricks_y = 50;
+var squares_x = 50;
+var squares_y = 170;
 var field_x = 0;
 var field_y = 0;
 
@@ -36,6 +38,7 @@ function draw_inspector() {
     c.globalAlpha = 1.0;
 
     draw_bricks_array(c, bricks_x, bricks_y, type, selected_i, selected_j);
+    draw_squares_array(c, squares_x, squares_y);
 
     draw_rotation(c);
     if(rotates[type]) {
@@ -228,6 +231,37 @@ function draw_bricks_array(c, start_x, start_y, selected_k, selected_i, selected
 
 	c.moveTo(start_x + k*4*width - width, start_y);
 	c.lineTo(start_x + k*4*width + 2*width, start_y);
+    }
+
+    c.stroke();
+}
+
+function draw_squares_array(c, start_x, start_y) {
+    c.font = "12pt Arial";
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+
+    c.fillStyle = "blue";
+    c.fillText("i", start_x + 5/2*width, start_y - height/2);
+    c.fillStyle = "red";
+    c.fillText("1", start_x - width/2, start_y + 3/2*height);
+
+    draw_arrow(c, start_x - width/2, start_y - height/2, start_x + 2*width, start_y - height/2, "blue");
+    draw_arrow(c, start_x - width/2, start_y - height/2, start_x - width/2, start_y + height, "red");
+
+    c.beginPath();
+    c.strokeStyle = "grey";
+
+    for(var i = 0; i < squares.length; i++) {
+	c.rect(start_x + i*width, start_y, width, height);
+	c.rect(start_x + i*width, start_y + height, width, height);
+
+	if(i == selected)
+	    c.fillStyle = "rgb(150, 150, 255)";
+	else
+	    c.fillStyle = "black";
+	c.fillText(squares[i][0].toString(), start_x + i*width + width/2, start_y + height/2);
+	c.fillText(squares[i][1].toString(), start_x + i*width + width/2, start_y + 3/2*height);
     }
 
     c.stroke();
