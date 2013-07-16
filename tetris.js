@@ -157,27 +157,19 @@ function move_down() {
 }
 
 function check_if_stopped() {
-    var stopped = false;
+    for(var i = 0; i < squares.length; i++)
+	if(y + squares[i][1] == field_height - 1 ||
+	   (y + squares[i][1] >= 0 && field[x + squares[i][0]][y + squares[i][1] + 1] != -1)) {
+	    for(var i = 0; i < squares.length; i++)
+		field[x + squares[i][0]][y + squares[i][1]] = color;
 
-    for(var i = 0; i < squares.length; i++) {
-	if(y + squares[i][1] == field_height - 1)
-	    stopped = true;
-	if(y + squares[i][1] >= 0) {
-	    if(field[x + squares[i][0]][y + squares[i][1] + 1] != -1)
-		stopped = true;
+	    remove_full_lines();
+
+	    if(!is_game_over())
+		launch();
+
+	    break;
 	}
-    }
-
-    if(stopped) {
-	for(var i = 0; i < squares.length; i++) {
-	    field[x + squares[i][0]][y + squares[i][1]] = color;
-	}
-
-	remove_full_lines();
-
-	if(!is_game_over())
-	    launch();
-    }
 }
 
 function can_rotate(new_rot) {
