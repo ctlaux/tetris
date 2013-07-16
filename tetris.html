@@ -75,35 +75,35 @@
 	  <code id="rotate_brick">
 	    <pre style="color:grey;">
 var result = [];
-for(var i = 0; i < bricks[k].length; i++) {
-  for(var j = 0; j < bricks[k][0].length; j++) {
-    if(bricks[k][i][j] == 1) {
-      m = i - center[k][0];
-      n = j - center[k][1];
+for(var <span style="color:blue;">i</span> = 0; <span style="color:blue;">i</span> < bricks[k].length; <span style="color:blue;">i</span>++) {
+  for(var <span style="color:red;">j</span> = 0; <span style="color:red;">j</span> < bricks[k][0].length; <span style="color:red;">j</span>++) {
+    if(bricks[<span style="color:green;">k</span>][<span style="color:blue;">i</span>][<span style="color:red;">j</span>] == 1) {
+      <span style="color:#00C2CC;">m</span> = <span style="color:blue;">i</span> - center[<span style="color:green;">k</span>][0];
+      <span style="color:#76BF00;">n</span> = <span style="color:red;">j</span> - center[<span style="color:green;">k</span>][1];
 
-      switch(rot) {
+      switch(<span style="color:black;">rot</span>) {
       case 0:
-	p = m;
-	q = n;
+	<span style="color:#871BE0;">p</span> = <span style="color:#00C2CC;">m</span>;
+	<span style="color:#9BA300;">q</span> = <span style="color:#76BF00;">n</span>;
 	break;
 
       case 1:
-	p = n;
-	q = -m;
+	<span style="color:#871BE0;">p</span> = <span style="color:#76BF00;">n</span>;
+	<span style="color:#9BA300;">q</span> = -<span style="color:#00C2CC;">m</span>;
 	break;
 
       case 2:
-	p = -m;
-	q = -n;
+	<span style="color:#871BE0;">p</span> = -<span style="color:#00C2CC;">m</span>;
+	<span style="color:#9BA300;">q</span> = -<span style="color:#76BF00;">n</span>;
 	break;
 
       case 3:
-	p = -n;
-	q = m;
+	<span style="color:#871BE0;">p</span> = -<span style="color:#76BF00;">n</span>;
+	<span style="color:#9BA300;">q</span> = <span style="color:#00C2CC;">m</span>;
 	break;
       }
 
-      result.push([p, q]);
+      result.push([<span style="color:#871BE0;">p</span>, <span style="color:#9BA300;">q</span>]);
     }
   }
 }
