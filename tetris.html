@@ -72,25 +72,71 @@
 
       <div id="middle">
 	<div id="code">
-	  <code><pre style="color:grey;">
+	  <code id="rotate_brick">
+	    <pre style="color:grey;">
+var result = [];
+for(var i = 0; i < bricks[k].length; i++) {
+  for(var j = 0; j < bricks[k][0].length; j++) {
+    if(bricks[k][i][j] == 1) {
+      m = i - center[k][0];
+      n = j - center[k][1];
+
+      switch(rot) {
+      case 0:
+	p = m;
+	q = n;
+	break;
+
+      case 1:
+	p = n;
+	q = -m;
+	break;
+
+      case 2:
+	p = -m;
+	q = -n;
+	break;
+
+      case 3:
+	p = -n;
+	q = m;
+	break;
+      }
+
+      result.push([p, q]);
+    }
+  }
+}
+	    </pre>
+	  </code>
+	  <code id="check_if_stopped" style="display:none;">
+	    <pre style="color:grey;">
 var stopped = false;
 
-for(var i = 0; i < squares.length; i++) {
-  if(<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span> == field_height - 1)
+for(var <span style="color:blue">i</span> = 0; <span style="color:blue">i</span> < squares.length; <span style="color:blue">i</span>++) {
+  if(<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[<span style="color:blue">i</span>][1]</span> + 1 == field_height)
     stopped = true;
-  if(<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span> >= 0) {
-    if(field[<span style="color:#00CCE3;">x</span> + <span style="color:#871BE0;">squares[i][0]</span>][<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span> + 1] != -1)
-      stopped = true;
-    }
+  if(field[<span style="color:#00CCE3;">x</span> + <span style="color:#871BE0;">squares[<span style="color:blue">i</span>][0]</span>][<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[<span style="color:blue">i</span>][1]</span> + 1] != -1)
+    stopped = true;
 }
 
 if(stopped) {
-  for(var i = 0; i < squares.length; i++) {
-    field[<span style="color:#00CCE3;">x</span> + <span style="color:#871BE0;">squares[i][0]</span>][<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[i][1]</span>] = color;
+  for(var <span style="color:blue">i</span> = 0; <span style="color:blue">i</span> < squares.length; <span style="color:blue">i</span>++) {
+    field[<span style="color:#00CCE3;">x</span> + <span style="color:#871BE0;">squares[<span style="color:blue">i</span>][0]</span>][<span style="color:#005FE3;">y</span> + <span style="color:#9BA300;">squares[<span style="color:blue">i</span>][1]</span>] = color;
+
+    remove_full_lines();
+
+    if(!is_game_over())
+	launch_new_brick();
   }
 }
-	  </pre></code>
+	    </pre>
+	  </code>
 	</div>
+	<select onchange="code_select(this.value)" name="code-select" size="3">
+	  <option value="rotate_brick" selected>rotate_brick</option>
+	  <option value="check_if_stopped">check_if_stopped</option>
+	</select>
       </div>
 
       <canvas id="canvas3" width="240" height="650"></canvas>

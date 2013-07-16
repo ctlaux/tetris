@@ -393,6 +393,16 @@ function get_cursor_position(canvas, e) {
     return [x, y];
 }
 
+function code_select(selected) {
+    var code_parts = ["rotate_brick", "check_if_stopped"];
+
+    for(var i = 0; i < code_parts.length; i++)
+	if(code_parts[i] != selected)
+	    $("#" + code_parts[i]).hide();
+
+    $("#" + selected).show();
+}
+
 $(function() {
     var canvas2 = document.getElementById('canvas2');
     canvas2.addEventListener("click", click_select_square_canvas2, false);
