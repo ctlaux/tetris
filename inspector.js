@@ -173,6 +173,9 @@ function get_rotation(x, y) {
 }
 
 function print_coordinate_mapping(c) {
+    if($.browser.mozilla)
+	return;
+
     c.beginPath();
     c.font = "12pt Arial";
     c.textAlign = "start";
@@ -327,7 +330,7 @@ function draw_field_array(c, start_x, start_y) {
 		c.fillRect(start_x + width + i*width, start_y + height + j*height, width, height);
 	    }
 
-	    if(selected_code == "remove_full_lines") {
+	    if(selected_code == "remove_full_lines" && ! $.browser.mozilla) {
 		c.font = "12pt Arial";
 		c.textAlign = "center";
 		c.textBaseline = "middle";
