@@ -1,7 +1,8 @@
 
-var code_parts = ["rotate_brick", "check_if_stopped"];
+var code_parts = ["rotate_brick", "check_if_stopped", "remove_full_lines"];
 var arrows = {"rotate_brick": {"brick_array": true, "rotation": true, "squares": false, "field_xy": false, "field_squares": false},
-	      "check_if_stopped": {"brick_array": false, "rotation": true, "squares": true, "field_xy": true, "field_squares": true}}
+	      "check_if_stopped": {"brick_array": false, "rotation": true, "squares": true, "field_xy": true, "field_squares": true},
+	      "remove_full_lines": {"brick_array": false, "rotation": false, "squares": false, "field_xy": false, "field_squares": false}}
 
 var selected_code = "rotate_brick";
 
@@ -293,24 +294,50 @@ function draw_field_array(c, start_x, start_y) {
 	}
     }
 
+    if(selected_code == "remove_full_lines") {
+	c.fillStyle = "blue";
+	c.fillText("i", start_x + 5*width + 7, start_y + height - 5);
+	draw_arrow(c, start_x + width/2, start_y + height/2, start_x + 5*width, start_y + height/2, "blue");
+	c.fillStyle = "red";
+	c.fillText("j", start_x + 7, start_y + 11*height - 5);
+	draw_arrow(c, start_x + width/2, start_y + height/2, start_x + width/2, start_y + 10*height, "red");
+    }
+
     c.beginPath();
     c.strokeStyle = "grey";
 
-    for(var i = 0; i < squares.length; i++) {
-	if(i == selected)
-	    c.fillStyle = "rgb(200, 200, 255)";
-	else
-	    c.fillStyle = "rgb(220, 220, 220)";
-	if(y + squares[i][1] >= 0)
-	    c.fillRect(start_x + (x + squares[i][0] + 1)*width, start_y + (y + squares[i][1] + 1)*height, width, height);
+    if(selected_code != "remove_full_lines") {
+	for(var i = 0; i < squares.length; i++) {
+	    if(i == selected)
+		c.fillStyle = "rgb(200, 200, 255)";
+	    else
+		c.fillStyle = "rgb(220, 220, 220)";
+	    if(y + squares[i][1] >= 0)
+		c.fillRect(start_x + (x + squares[i][0] + 1)*width, start_y + (y + squares[i][1] + 1)*height, width, height);
+	}
     }
 
     for(var i = 0; i < field_width; i++)
 	for(var j = 0; j < field_height; j++) {
 	    c.rect(start_x + width + i*width, start_y + height + j*height, width, height);
+
 	    if(field[i][j] != -1) {
 		c.fillStyle = "rgb(220, 220, 220)";
 		c.fillRect(start_x + width + i*width, start_y + height + j*height, width, height);
+	    }
+
+	    if(selected_code == "remove_full_lines") {
+		c.font = "12pt Arial";
+		c.textAlign = "center";
+		c.textBaseline = "middle";
+
+		var str = "0";
+		c.fillStyle = "grey";
+		if(field[i][j] != -1) {
+		    str = "1";
+		    c.fillStyle = "black";
+		}
+		c.fillText(str, start_x + (i + 3/2)*width, start_y + (j + 3/2)*height);
 	    }
 	}
 
