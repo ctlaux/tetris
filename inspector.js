@@ -251,6 +251,21 @@ function draw_bricks_array(c, start_x, start_y, selected_k, selected_i, selected
 			c.fillStyle = "rgb(220, 220, 220)";
 		    c.fillRect(x, y, width, height);
 		    c.rect(x, y, width, height);
+
+		    if(i == center[k][0] && j == center[k][1]) {
+			c.stroke();
+			c.beginPath();
+			c.strokeStyle = "#E32B69";
+			
+			c.moveTo(x + width/2 - 3, y + height/2 - 3);
+			c.lineTo(x + width/2 + 3, y + height/2 + 3);
+			c.moveTo(x + width/2 - 3, y + height/2 + 3);
+			c.lineTo(x + width/2 + 3, y + height/2 - 3);
+
+			c.stroke();
+			c.beginPath();
+			c.strokeStyle = "grey";
+		    }
 		}
 		y+= height;
 	    }
