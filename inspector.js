@@ -32,6 +32,8 @@ var bricks_x = 50;
 var bricks_y = 50;
 var squares_x = 50;
 var squares_y = 170;
+var centers_x = 250;
+var centers_y = 170;
 var field_x = 0;
 var field_y = 0;
 
@@ -62,6 +64,7 @@ function draw_inspector() {
 
     draw_bricks_array(c, bricks_x, bricks_y, type, selected_i, selected_j);
     draw_squares_array(c, squares_x, squares_y);
+    draw_centers_array(c, centers_x, centers_y);
 
     draw_rotation(c);
     if(rotates[type]) {
@@ -284,6 +287,10 @@ function draw_squares_array(c, start_x, start_y) {
     c.strokeStyle = "grey";
 
     for(var i = 0; i < squares.length; i++) {
+	c.fillStyle = "#C9AFDE";
+	c.fillRect(start_x + i*width, start_y, width, height);
+	c.fillStyle = "#D7DB8A";
+	c.fillRect(start_x + i*width, start_y + height, width, height);
 	c.rect(start_x + i*width, start_y, width, height);
 	c.rect(start_x + i*width, start_y + height, width, height);
 
@@ -293,6 +300,37 @@ function draw_squares_array(c, start_x, start_y) {
 	    c.fillStyle = "black";
 	c.fillText(squares[i][0].toString(), start_x + i*width + width/2, start_y + height/2);
 	c.fillText(squares[i][1].toString(), start_x + i*width + width/2, start_y + 3/2*height);
+    }
+
+    c.stroke();
+}
+
+function draw_centers_array(c, start_x, start_y) {
+    c.font = "12pt Arial";
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+
+    if(selected_code == "rotate_brick") {
+	c.fillStyle = "green";
+	c.fillText("k", start_x + (type + 1/2)*width, start_y - height/2);
+
+	draw_arrow(c, start_x - width/2, start_y - height/2, start_x + type*width, start_y - height/2, "green");
+    }
+
+    c.beginPath();
+    c.strokeStyle = "grey";
+
+    for(var i = 0; i < center.length; i++) {
+	c.fillStyle = "#EBB7C8";
+	c.fillRect(start_x + i*width, start_y, width, height);
+	c.fillStyle = "#EBB7C8";
+	c.fillRect(start_x + i*width, start_y + height, width, height);
+	c.rect(start_x + i*width, start_y, width, height);
+	c.rect(start_x + i*width, start_y + height, width, height);
+
+	c.fillStyle = "black";
+	c.fillText(center[i][0].toString(), start_x + i*width + width/2, start_y + height/2);
+	c.fillText(center[i][1].toString(), start_x + i*width + width/2, start_y + 3/2*height);
     }
 
     c.stroke();
