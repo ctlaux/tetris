@@ -99,11 +99,11 @@
 	  <code id="rotate_brick">
 	    <pre style="color:grey;">
 var result = [];
-for(var <span style="color:blue;">i</span> = 0; <span style="color:blue;">i</span> < bricks[k].length; <span style="color:blue;">i</span>++) {
-  for(var <span style="color:red;">j</span> = 0; <span style="color:red;">j</span> < bricks[k][0].length; <span style="color:red;">j</span>++) {
+for(var <span style="color:blue;">i</span> = 0; <span style="color:blue;">i</span> < bricks[<span style="color:green;">k</span>].length; <span style="color:blue;">i</span>++) {
+  for(var <span style="color:red;">j</span> = 0; <span style="color:red;">j</span> < bricks[<span style="color:green;">k</span>][0].length; <span style="color:red;">j</span>++) {
     if(bricks[<span style="color:green;">k</span>][<span style="color:blue;">i</span>][<span style="color:red;">j</span>] == 1) {
-      <span style="color:#00C2CC;">m</span> = <span style="color:blue;">i</span> - center[<span style="color:green;">k</span>][0];
-      <span style="color:#76BF00;">n</span> = <span style="color:red;">j</span> - center[<span style="color:green;">k</span>][1];
+      <span style="color:#00C2CC;">m</span> = <span style="color:blue;">i</span> - <span style="color:#E32B69;">center[<span style="color:green;">k</span>][0]</span>;
+      <span style="color:#76BF00;">n</span> = <span style="color:red;">j</span> - <span style="color:#E32B69;">center[<span style="color:green;">k</span>][1]</span>;
 
       switch(<span style="color:black;">rot</span>) {
       case 0:
@@ -183,8 +183,8 @@ for(var <span style="color:red">j</span> = 0; <span style="color:red">j</span> <
       <canvas id="canvas3" width="240" height="650"></canvas>
     </div>
 
-    <script type="text/javascript" src="jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="keypress.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="http://dmauro.github.io/Keypress/js/keypress.js"></script>
     <script type="text/javascript" src="tetris.js"></script>
     <script type="text/javascript" src="inspector.js"></script>
   </body>
