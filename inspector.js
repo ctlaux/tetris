@@ -58,7 +58,8 @@ function draw_inspector() {
     c.globalAlpha = 1.0;
 
     draw_field_array(c, field_x, field_y);
-    print_row_counts(c, field_x, field_y);
+    if(selected_code == "remove_full_lines")
+	print_row_counts(c, field_x, field_y);
 }
 
 function draw_rotation(c) {
