@@ -172,7 +172,21 @@ function check_if_stopped() {
 	}
 }
 
-function can_rotate(new_rot) {
+function calculate_rot_move(new_rot) {
+    var dx = 0;
+    var s = calculate_squares(new_rot, type);
+
+    for(var i = 0; i < s.length; i++) {
+	if(x + s[i][0] < 0)
+	    dx = Math.max(dx, -(x + s[i][0]));
+	if(x + s[i][0] >= field_width)
+	    dx = Math.min(dx, field_width - 1 - (x + s[i][0]));
+    }
+
+    return dx;
+}
+
+function can_rotate(new_rot, x, y) {
     var can_rotate = true;
     var s = calculate_squares(new_rot, type);
 
@@ -263,13 +277,15 @@ function new_game() {
 }
 
 keypress.combo("up", function() {
-    if(rotates[type] && can_rotate((rot+1) % 4)) {
-	rot++;
-	if(rot == 4)
-	    rot = 0;
-	squares = calculate_squares(rot, type);
-	check_if_stopped();
-	draw();
+    if(rotates[type]) {
+	var dx = calculate_rot_move((rot+1) % 4);
+	if(can_rotate((rot+1) % 4, x + dx, y)) {
+	    rot = (rot+1) % 4;
+	    x+= dx;
+	    squares = calculate_squares(rot, type);
+	    check_if_stopped();
+	    draw();
+	}
     }
 });
 
