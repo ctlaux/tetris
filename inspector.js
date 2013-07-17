@@ -445,10 +445,13 @@ function code_select(selected) {
     selected_code = selected;
 
     for(var i = 0; i < code_parts.length; i++)
-	if(code_parts[i] != selected)
+	if(code_parts[i] != selected) {
 	    $("#" + code_parts[i]).hide();
+	    $("#tab_" + code_parts[i]).removeClass("selected");
+	}
 
     $("#" + selected).show();
+    $("#tab_" + selected).addClass("selected");
 
     draw_inspector();
 }

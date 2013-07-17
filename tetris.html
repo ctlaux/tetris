@@ -9,6 +9,7 @@
       }
 
       #header {
+        font-family:"Arial", Arial, sans-serif;
         width: 200px;
       }
 
@@ -21,11 +22,13 @@
       }
 
       #message {
+        font-family:"Arial", Arial, sans-serif;
         float: left;
         display: none;
       }
 
       #newgame {
+        font-family:"Arial", Arial, sans-serif;
         float: right;
       }
 
@@ -41,9 +44,27 @@
         margin-top: 250px;
       }
 
+      .tab {
+        font-family:"Arial", Arial, sans-serif;
+        cursor:pointer;
+        display: inline;
+        border: 1px black solid;
+        padding: 5px;
+        margin: 5px;
+      }
+
+      .selected {
+        background-color:#E0E0E0;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
       #code {
         border: 1px black solid;
         padding: 10px;
+        margin: 4px;
         width: 500px;
         height: 500px;
       }
@@ -71,6 +92,9 @@
       </div>
 
       <div id="middle">
+	<div class="tab selected" id="tab_rotate_brick" onclick="code_select('rotate_brick')">rotate_brick</div>
+	<div class="tab" id="tab_check_if_stopped" onclick="code_select('check_if_stopped')">check_if_stopped</div>
+	<div class="tab" id="tab_remove_full_lines" onclick="code_select('remove_full_lines')">remove_full_lines</div>
 	<div id="code">
 	  <code id="rotate_brick">
 	    <pre style="color:grey;">
@@ -154,11 +178,6 @@ for(var <span style="color:red">j</span> = 0; <span style="color:red">j</span> <
 	    </pre>
 	  </code>
 	</div>
-	<select onchange="code_select(this.value)" name="code-select" size="3">
-	  <option value="rotate_brick" selected>rotate_brick</option>
-	  <option value="check_if_stopped">check_if_stopped</option>
-	  <option value="remove_full_lines">remove_full_lines</option>
-	</select>
       </div>
 
       <canvas id="canvas3" width="240" height="650"></canvas>
