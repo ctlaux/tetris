@@ -149,9 +149,9 @@ function move_down() {
     if(paused)
 	return;
 
-    y++;
-
     check_if_stopped();
+
+    y++;
 
     draw();
 }
