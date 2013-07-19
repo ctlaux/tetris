@@ -292,7 +292,9 @@ function new_game() {
     draw();
 }
 
-keypress.combo("up", function() {
+keypress.combo("up", function(event) {
+    event.preventDefault();
+
     if(rotates[type]) {
 	var dx = calculate_rot_move((rot+1) % 4);
 	if(can_rotate((rot+1) % 4, x + dx, y)) {
@@ -305,11 +307,15 @@ keypress.combo("up", function() {
     }
 });
 
-keypress.combo("down", function() {
+keypress.combo("down", function(event) {
+    event.preventDefault();
+
     move_down();
 });
 
-keypress.combo("right", function() {
+keypress.combo("right", function(event) {
+    event.preventDefault();
+
     var move = true;
     for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == field_width - 1)
@@ -325,7 +331,9 @@ keypress.combo("right", function() {
     }
 });
 
-keypress.combo("left", function() {
+keypress.combo("left", function(event) {
+    event.preventDefault();
+
     var move = true;
     for(var i = 0; i < squares.length; i++) {
 	if(x + squares[i][0] == 0)
