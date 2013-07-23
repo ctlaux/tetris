@@ -18,11 +18,22 @@
 var source = "tetris.xml"
 var xml;
 
+var current_selection = null;
+
 
 function on_launch() {
 }
 
 function draw_inspector() {
+}
+
+function code_clicked(obj) {
+    if(current_selection != null)
+	$("." + current_selection).css("color", "grey");
+
+    classes = $(obj).attr("class").split(" ");
+    current_selection = classes[1];
+    $("." + current_selection).css("color", "red");
 }
 
 function render_markup(code) {
@@ -36,7 +47,7 @@ function render_markup(code) {
 	    break;
 
 	case "inspect":
-	    html+= "<b>" + $(nodes[i]).text() + "</b>";
+	    html+= "<b class='inspectable " + $(nodes[i]).attr("class") + "' onclick='code_clicked(this);'>" + $(nodes[i]).text() + "</b>";
 	    break;
 	}
     }
