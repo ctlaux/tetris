@@ -109,18 +109,18 @@ function draw_square(c, x, y, color) {
     c.stroke();
 }
 
-function calculate_squares(rot, m) {
+function calculate_squares(<inspect class="rot">rot</inspect>, <inspect class="calcsq_m">m</inspect>) {
     var ret = [];
 
-    for(var i = 0; i &lt; bricks[m].length; i++)
-	for(var j = 0; j &lt; bricks[m][0].length; j++)
-	    if(bricks[m][i][j] == 1)
-		ret.push(rotate(rot, i - center[m][0], j - center[m][1]));
+    for(var <inspect class="calcsq_i">i</inspect> = 0; <inspect class="calcsq_i">i</inspect> &lt; bricks[<inspect class="calcsq_m">m</inspect>].length; <inspect class="calcsq_i">i</inspect>++)
+	for(var <inspect class="calcsq_j">j</inspect> = 0; <inspect class="calcsq_j">j</inspect> &lt; bricks[<inspect class="calcsq_m">m</inspect>][0].length; <inspect class="calcsq_j">j</inspect>++)
+	    if(bricks[<inspect class="calcsq_m">m</inspect>][<inspect class="calcsq_i">i</inspect>][<inspect class="calcsq_j">j</inspect>] == 1)
+		ret.push(rotate(<inspect class="rot">rot</inspect>, <inspect class="calcsq_i">i</inspect> - center[<inspect class="calcsq_m">m</inspect>][0], <inspect class="calcsq_j">j</inspect> - center[<inspect class="calcsq_m">m</inspect>][1]));
     return ret;
 }
 
-function rotate(rot, x, y) {
-    switch(rot) {
+function rotate(<inspect class="rot">rot</inspect>, <inspect class="rotate_x">x</inspect>, <inspect class="rotate_y">y</inspect>) {
+    switch(<inspect class="rot">rot</inspect>) {
     case 0:
 	<inspect class="rotate_p">p</inspect> = <inspect class="rotate_x">x</inspect>;
 	<inspect class="rotate_q">q</inspect> = <inspect class="rotate_y">y</inspect>;
