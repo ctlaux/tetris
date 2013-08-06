@@ -25,6 +25,12 @@ function on_launch() {
 }
 
 function draw_inspector() {
+    var canvas2 = document.getElementById('canvas2');
+    canvas2.width = canvas2.width;
+    var c = canvas2.getContext('2d');
+
+    if(current_selection == "rotate_p")
+	draw_rotation(c, 100, 100, true, "red", null, null, null);
 }
 
 function code_clicked(obj) {
@@ -34,6 +40,8 @@ function code_clicked(obj) {
     classes = $(obj).attr("class").split(" ");
     current_selection = classes[1];
     $("." + current_selection).css("color", "red");
+
+    draw_inspector();
 }
 
 function render_markup(code) {

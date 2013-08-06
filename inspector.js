@@ -22,10 +22,8 @@ var arrows = {"rotate_brick": {"brick_array": true, "rotation": true, "squares":
 
 var selected_code = "rotate_brick";
 
-var original_x = 650;
-var original_y = 100;
-var rotated_x = 750;
-var rotated_y = 100;
+var rotation_x = 650;
+var rotation_y = 100;
 var text_x = 650;
 var text_y = 180;
 var bricks_x = 50;
@@ -66,7 +64,11 @@ function draw_inspector() {
     draw_squares_array(c, squares_x, squares_y);
     draw_centers_array(c, centers_x, centers_y);
 
-    draw_rotation(c);
+    if(arrows[selected_code]["rotation"])
+	draw_rotation(c, rotation_x, rotation_y, rotates[type], "#00C2CC", "#76BF00", "#871BE0", "#9BA300");
+    else
+	draw_rotation(c, rotation_x, rotation_y, rotates[type], null, null, null, null);
+
     if(rotates[type]) {
 	print_coordinate_mapping(c);
     }
@@ -81,44 +83,43 @@ function draw_inspector() {
 	print_row_counts(c, field_x, field_y);
 }
 
-function draw_rotation(c) {
+function draw_rotation(c, start_x, start_y, draw_second, orig_x_arrow, orig_y_arrow, rot_x_arrow, rot_y_arrow) {
     var b = calculate_squares(0, type);
     c.fillStyle = "rgb(200, 200, 250)";
-    c.fillRect(original_x + b[selected][0] * width, original_y + b[selected][1] * height, width, height);
+    c.fillRect(start_x + b[selected][0] * width, start_y + b[selected][1] * height, width, height);
     if(rotates[type])
-	c.fillRect(rotated_x + squares[selected][0] * width, rotated_y + squares[selected][1] * height, width, height);
+	c.fillRect(start_x + 100 + squares[selected][0] * width, start_y + squares[selected][1] * height, width, height);
 
     for(var i = 0; i < b.length; i++) {
 	c.beginPath();
 	c.strokeStyle = "grey";
-	c.rect(original_x + b[i][0] * width, original_y + b[i][1] * height, width, height);
+	c.rect(start_x + b[i][0] * width, start_y + b[i][1] * height, width, height);
 	c.stroke();
     }
 
-    if(rotates[type]) {
+    var x1 = start_x + width/2;
+    var y1 = start_y + height/2;
+
+    if(orig_x_arrow && b[selected][0] != 0)
+	draw_arrow(c, x1, y1, x1 + b[selected][0] * width, y1, orig_x_arrow);
+    if(orig_y_arrow && b[selected][1] != 0)
+	draw_arrow(c, x1 + b[selected][0] * width, y1, x1 + b[selected][0] * width, y1 + b[selected][1] * height, orig_y_arrow);
+
+    if(draw_second) {
 	for(var i = 0; i < squares.length; i++) {
 	    c.beginPath();
 	    c.strokeStyle = "grey";
-	    c.rect(rotated_x + squares[i][0] * width, rotated_y + squares[i][1] * height, width, height);
+	    c.rect(start_x + 100 + squares[i][0] * width, start_y + squares[i][1] * height, width, height);
 	    c.stroke();
 	}
 
-	if(arrows[selected_code]["rotation"]) {
-	    var x1 = original_x + width/2;
-	    var y1 = original_y + height/2;
+	x1 = start_x + 100 + width/2;
+	y1 = start_y + height/2;
 
-	    if(b[selected][0] != 0)
-		draw_arrow(c, x1, y1, x1 + b[selected][0] * width, y1, "#00C2CC");
-	    if(b[selected][1] != 0)
-		draw_arrow(c, x1 + b[selected][0] * width, y1, x1 + b[selected][0] * width, y1 + b[selected][1] * height, "#76BF00");
-
-	    x1 = rotated_x + width/2;
-	    y1 = rotated_y + height/2;
-	    if(squares[selected][0] != 0)
-		draw_arrow(c, x1, y1, x1 + squares[selected][0] * width, y1, "#871BE0");
-	    if(squares[selected][1] != 0)
-		draw_arrow(c, x1 + squares[selected][0] * width, y1, x1 + squares[selected][0] * width, y1 + squares[selected][1] * height, "#9BA300");
-	}
+	if(rot_x_arrow && squares[selected][0] != 0)
+	    draw_arrow(c, x1, y1, x1 + squares[selected][0] * width, y1, rot_x_arrow);
+	if(rot_y_arrow && squares[selected][1] != 0)
+	    draw_arrow(c, x1 + squares[selected][0] * width, y1, x1 + squares[selected][0] * width, y1 + squares[selected][1] * height, rot_y_arrow);
 
 	var start_rot = 0;
 	var end_rot = 0;
@@ -128,8 +129,8 @@ function draw_rotation(c) {
 	else if(b[selected][1] != 0)
 	    start_rot = get_rotation(0, b[selected][1]);
 
-	var center_x = (original_x + rotated_x)/2;
-	var center_y = original_y - 50;
+	var center_x = start_x + 50;
+	var center_y = start_y - 50;
 
 	draw_arc_arrow(c, center_x, center_y, start_rot, (start_rot + rot) % 4);
 
@@ -139,7 +140,7 @@ function draw_rotation(c) {
 	c.textAlign = "center";
 	c.textBaseline = "middle";
 	c.fillText(rot.toString(), center_x, center_y);
-    }    
+    }
 }
 
 function draw_arrow(c, from_x, from_y, to_x, to_y, color) {
@@ -461,7 +462,7 @@ function click_select_square_canvas2(e) {
     var b = calculate_squares(0, type);
 
     for(var i = 0; i < b.length; i++)
-	if(click_inside_square(mouse_x, mouse_y, original_x, original_y, b[i]) ||
+	if(click_inside_square(mouse_x, mouse_y, rotation_x, rotation_y, b[i]) ||
 	   click_inside_square(mouse_x, mouse_y,
 			       bricks_x + 4 * type * width + center[type][0] * width,
 			       bricks_y + center[type][1] * height, b[i])) {
@@ -471,7 +472,7 @@ function click_select_square_canvas2(e) {
 	}
 
     for(var i = 0; i < squares.length; i++)
-	if(click_inside_square(mouse_x, mouse_y, rotated_x, rotated_y, squares[i])) {
+	if(click_inside_square(mouse_x, mouse_y, rotation_x + 100, rotation_y, squares[i])) {
 	    make_selection(i);
 	    change = true;
 	    break;
