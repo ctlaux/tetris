@@ -85,6 +85,19 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="http://dmauro.github.io/Keypress/js/keypress.js"></script>
     <script type="text/javascript" src="tetris.js"></script>
+    <script type="text/javascript" src="inspector.js"></script>
     <script type="text/javascript" src="inspector2.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $.ajax({type: "GET",
+                url: source,
+                dataType: "xml",
+	        success: function(data) {
+		  xml = data;
+		  render_markup(xml.firstChild);
+	        }
+	     });
+      });
+    </script>
   </body>
 </html>

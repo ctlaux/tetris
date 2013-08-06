@@ -54,15 +54,3 @@ function render_markup(code) {
 
     $("#code").append(html);
 }
-
-$(function() {
-    $.ajax({type: "GET",
-	    url: source,
-	    dataType: "xml",
-	    success: function(data) {
-		xml = data;
-		console.log("xml received");
-		render_markup(xml.firstChild);
-	    }
-	   });
-});

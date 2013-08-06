@@ -528,11 +528,3 @@ function code_select(selected) {
 
     draw_inspector();
 }
-
-$(function() {
-    var canvas2 = document.getElementById('canvas2');
-    canvas2.addEventListener("click", click_select_square_canvas2, false);
-
-    var canvas3 = document.getElementById('canvas3');
-    canvas3.addEventListener("click", click_select_square_canvas3, false);
-});
