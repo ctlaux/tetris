@@ -18,7 +18,9 @@
 var source = "tetris.xml"
 var xml;
 
-var current_selection = null;
+var current_selection = [null, null, null];
+
+var selection_color = ["red", "green", "blue"];
 
 var rotation_x = 100;
 var rotation_y = 100;
@@ -32,17 +34,46 @@ function draw_inspector() {
     canvas2.width = canvas2.width;
     var c = canvas2.getContext('2d');
 
-    if(current_selection == "rotate_p")
-	draw_rotation(c, rotation_x, rotation_y, true, null, null, "red", null);
+    if((current_selection[0] != null && current_selection[0].substring(0, 7) == "rotate_") ||
+       (current_selection[1] != null && current_selection[1].substring(0, 7) == "rotate_") ||
+       (current_selection[2] != null && current_selection[2].substring(0, 7) == "rotate_")) {
+	var orig_x_arrow = null;
+	var orig_y_arrow = null;
+	var rot_x_arrow = null;
+	var rot_y_arrow = null;
+
+	var i = current_selection.indexOf("rotate_p");
+	if(i != -1)
+	    orig_x_arrow = selection_color[i];
+	var i = current_selection.indexOf("rotate_q");
+	if(i != -1)
+	    orig_y_arrow = selection_color[i];
+	var i = current_selection.indexOf("rotate_x");
+	if(i != -1)
+	    rot_x_arrow = selection_color[i];
+	var i = current_selection.indexOf("rotate_y");
+	if(i != -1)
+	    rot_y_arrow = selection_color[i];
+
+	draw_rotation(c, rotation_x, rotation_y, true, orig_x_arrow, orig_y_arrow, rot_x_arrow, rot_y_arrow);
+    }
 }
 
-function code_clicked(obj) {
-    if(current_selection != null)
-	$("." + current_selection).css("color", "grey");
+function code_clicked(obj, e) {
+    var button = e.which - 1;
+
+    if(current_selection[button] != null)
+	$("." + current_selection[button]).css("color", "grey");
 
     classes = $(obj).attr("class").split(" ");
-    current_selection = classes[1];
-    $("." + current_selection).css("color", "red");
+
+    if(current_selection[button] == classes[1]) {                   // click a second time deselects
+	current_selection[button] = null;
+    }
+    else {
+	current_selection[button] = classes[1];
+	$("." + current_selection[button]).css("color", selection_color[button]);
+    }
 
     draw_inspector();
 }
@@ -58,12 +89,16 @@ function render_markup(code) {
 	    break;
 
 	case "inspect":
-	    html+= "<b class='inspectable " + $(nodes[i]).attr("class") + "' onclick='code_clicked(this);'>" + $(nodes[i]).text() + "</b>";
+	    html+= "<b class='inspectable " + $(nodes[i]).attr("class") + "'>" + $(nodes[i]).text() + "</b>";
 	    break;
 	}
     }
 
     $("#code").append(html);
+
+    $(".inspectable").mousedown(function(event) {
+	code_clicked(this, event);
+    });
 }
 
 function click_select_square_canvas2(e) {
@@ -73,7 +108,9 @@ function click_select_square_canvas2(e) {
     var mouse_y = cursor[1];
     var change = false;
 
-    if(current_selection != null && current_selection.substring(0, 7) == "rotate_") {
+    if((current_selection[0] != null && current_selection[0].substring(0, 7) == "rotate_") ||
+       (current_selection[1] != null && current_selection[1].substring(0, 7) == "rotate_") ||
+       (current_selection[2] != null && current_selection[2].substring(0, 7) == "rotate_")) {
 	var b = calculate_squares(0, type);
 
 	for(var i = 0; i < b.length; i++)
