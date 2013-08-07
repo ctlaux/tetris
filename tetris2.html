@@ -97,6 +97,9 @@
     <script type="text/javascript" src="inspector2.js"></script>
     <script type="text/javascript">
       $(function() {
+        var canvas2 = document.getElementById('canvas2');
+        canvas2.addEventListener("click", click_select_square_canvas2, false);
+
         $.ajax({type: "GET",
                 url: source,
                 dataType: "xml",
