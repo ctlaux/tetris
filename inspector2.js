@@ -42,16 +42,16 @@ function draw_inspector() {
 	var rot_x_arrow = null;
 	var rot_y_arrow = null;
 
-	var i = current_selection.indexOf("rotate_p");
-	if(i != -1)
-	    orig_x_arrow = selection_color[i];
-	var i = current_selection.indexOf("rotate_q");
-	if(i != -1)
-	    orig_y_arrow = selection_color[i];
 	var i = current_selection.indexOf("rotate_x");
 	if(i != -1)
+	    orig_x_arrow = selection_color[i];
+	i = current_selection.indexOf("rotate_y");
+	if(i != -1)
+	    orig_y_arrow = selection_color[i];
+	i = current_selection.indexOf("rotate_p");
+	if(i != -1)
 	    rot_x_arrow = selection_color[i];
-	var i = current_selection.indexOf("rotate_y");
+	i = current_selection.indexOf("rotate_q");
 	if(i != -1)
 	    rot_y_arrow = selection_color[i];
 
