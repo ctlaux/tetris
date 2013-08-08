@@ -24,6 +24,8 @@ var selection_color = ["red", "green", "blue"];
 
 var rotation_x = 100;
 var rotation_y = 100;
+var start_x = 100;
+var start_y = 100;
 
 
 function on_launch() {
@@ -34,9 +36,7 @@ function draw_inspector() {
     canvas2.width = canvas2.width;
     var c = canvas2.getContext('2d');
 
-    if((current_selection[0] != null && current_selection[0].substring(0, 7) == "rotate_") ||
-       (current_selection[1] != null && current_selection[1].substring(0, 7) == "rotate_") ||
-       (current_selection[2] != null && current_selection[2].substring(0, 7) == "rotate_")) {
+    if(selection_begins_with("rotate_")) {
 	var orig_x_arrow = null;
 	var orig_y_arrow = null;
 	var rot_x_arrow = null;
@@ -57,6 +57,29 @@ function draw_inspector() {
 
 	draw_rotation(c, rotation_x, rotation_y, true, orig_x_arrow, orig_y_arrow, rot_x_arrow, rot_y_arrow);
     }
+    else if(selection_begins_with("calcsq_")) {
+	var draw_k = null;
+	var draw_i = null;
+	var draw_j = null;
+
+	var i = current_selection.indexOf("calcsq_k");
+	if(i != -1)
+	    draw_k = selection_color[i];
+	i = current_selection.indexOf("calcsq_i");
+	if(i != -1)
+	    draw_i = selection_color[i];
+	i = current_selection.indexOf("calcsq_j");
+	if(i != -1)
+	    draw_j = selection_color[i];
+
+	draw_bricks_array(c, start_x, start_y, true, draw_k, draw_i, draw_j, type, selected_i, selected_j);
+    }
+}
+
+function selection_begins_with(str) {
+    return (current_selection[0] != null && current_selection[0].substring(0, str.length) == str) ||
+	   (current_selection[1] != null && current_selection[1].substring(0, str.length) == str) ||
+	   (current_selection[2] != null && current_selection[2].substring(0, str.length) == str);
 }
 
 function code_clicked(obj, e) {

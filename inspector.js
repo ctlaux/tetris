@@ -60,7 +60,7 @@ function draw_inspector() {
     var c = canvas2.getContext('2d');
     c.globalAlpha = 1.0;
 
-    draw_bricks_array(c, bricks_x, bricks_y, type, selected_i, selected_j);
+    draw_bricks_array(c, bricks_x, bricks_y, arrows[selected_code]["brick_array"], "green", "blue", "red", type, selected_i, selected_j);
     draw_squares_array(c, squares_x, squares_y);
     draw_centers_array(c, centers_x, centers_y);
 
@@ -214,27 +214,34 @@ function print_coordinate_mapping(c) {
     }
 }
 
-function draw_bricks_array(c, start_x, start_y, selected_k, selected_i, selected_j) {
+function draw_bricks_array(c, start_x, start_y, draw_arrows, draw_k, draw_i, draw_j, selected_k, selected_i, selected_j) {
     var x = start_x;
     var y = start_y;
 
-    if(arrows[selected_code]["brick_array"]) {
+    if(draw_arrows) {
 	c.font = "12pt Arial";
 	c.textAlign = "start";
 	c.textBaseline = "alphabetic";
 
-	c.fillStyle = "green";
-	c.fillText("k", start_x - width + selected_k * 4 * width + 7, start_y - height - 5);
-	c.fillStyle = "blue";
-	c.fillText("i", start_x - width + selected_k * 4 * width + (selected_i + 1) * width + 7, start_y - 5);
-	c.fillStyle = "red";
-	c.fillText("j", start_x - width + selected_k * 4 * width + 7, start_y + (selected_j + 1) * height - 5);
+	if(draw_k != null) {
+	    c.fillStyle = draw_k;
+	    c.fillText("k", start_x - width + selected_k * 4 * width + 7, start_y - height - 5);
+	    draw_arrow(c, start_x - 3/2*width, start_y - 3/2*height, start_x - width + selected_k * 4 * width, start_y - 3/2*height, draw_k);
+	}
 
-	draw_arrow(c, start_x - 3/2*width, start_y - 3/2*height, start_x - width + selected_k * 4 * width, start_y - 3/2*height, "green");
-	draw_arrow(c, start_x + selected_k * 4 * width - 0.5*width, start_y - height/2,
-	              start_x - width + selected_k * 4 * width + (selected_i + 1) * width, start_y - height/2, "blue");
-	draw_arrow(c, start_x + selected_k * 4 * width - 0.5*width, start_y - height/2,
-	              start_x + selected_k * 4 * width - 0.5*width, start_y - height/2 + (selected_j + 0.5) * height, "red");
+	if(draw_i != null) {
+	    c.fillStyle = draw_i;
+	    c.fillText("i", start_x - width + selected_k * 4 * width + (selected_i + 1) * width + 7, start_y - 5);
+	    draw_arrow(c, start_x + selected_k * 4 * width - 0.5*width, start_y - height/2,
+	                  start_x - width + selected_k * 4 * width + (selected_i + 1) * width, start_y - height/2, draw_i);
+	}
+
+	if(draw_j != null) {
+	    c.fillStyle = draw_j;
+	    c.fillText("j", start_x - width + selected_k * 4 * width + 7, start_y + (selected_j + 1) * height - 5);
+	    draw_arrow(c, start_x + selected_k * 4 * width - 0.5*width, start_y - height/2,
+	                  start_x + selected_k * 4 * width - 0.5*width, start_y - height/2 + (selected_j + 0.5) * height, draw_j);
+	}
     }
 
     c.beginPath();
