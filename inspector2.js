@@ -30,9 +30,6 @@ var start_x = 100;
 var start_y = 100;
 
 
-function on_launch() {
-}
-
 function draw_inspector() {
     var canvas2 = document.getElementById('canvas2');
     canvas2.width = canvas2.width;
