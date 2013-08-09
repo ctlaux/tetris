@@ -22,6 +22,10 @@ var current_selection = [null, null, null];
 
 var selection_color = ["red", "green", "blue"];
 
+var vars = {};
+var var_counter = 0;
+var var_exclusion = ["Math", "length"];
+
 var rotation_x = 100;
 var rotation_y = 100;
 var start_x = 100;
@@ -108,7 +112,7 @@ function render_markup(code) {
     for(var i = 0; i < nodes.length; i++) {
 	switch(nodes[i].nodeName) {
 	case "#text":
-	    html+= $(nodes[i]).text();
+	    html+= markup_variables($(nodes[i]).text());
 	    break;
 
 	case "inspect":
@@ -122,6 +126,31 @@ function render_markup(code) {
     $(".inspectable").mousedown(function(event) {
 	code_clicked(this, event);
     });
+}
+
+function markup_variables(text) {
+    acc = "";
+    current = ""
+
+    for(var i = 0; i < text.length; i++) {
+	if(text[i].match(/\w/))
+	    current+= text[i];
+	else {
+	    if(current.length >= 1 && var_exclusion.indexOf(current) == -1 && window[current] != null && typeof(window[current]) != "function") {
+		if(!(current in vars))
+		    vars[current] = var_counter++;
+		current = "<b class='inspectable variable_" + vars[current] + "'>" + current + "</b>";
+	    }
+
+	    acc+= current;
+	    acc+= text[i];
+	    current = "";
+	}
+    }
+
+    acc+= current;
+
+    return acc;
 }
 
 function click_select_square_canvas2(e) {
