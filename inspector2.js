@@ -22,8 +22,6 @@ var current_selection = [null, null, null];
 
 var selection_color = ["red", "green", "blue"];
 
-var vars = {};
-var var_counter = 0;
 var var_exclusion = ["Math", "length"];
 
 var rotation_x = 100;
@@ -77,6 +75,18 @@ function draw_inspector() {
 	    draw_j = selection_color[i];
 
 	draw_bricks_array(c, start_x, start_y, true, draw_k, draw_i, draw_j, type, selected_i, selected_j);
+    }
+    else if(selection_begins_with("variable_")) {
+	c.font = "12pt Arial";
+	c.textAlign = "start";
+	c.textBaseline = "alphabetic";
+
+	for(var i = 0; i < current_selection.length; i++)
+	    if(current_selection[i] != null && current_selection[i].substring(0, 9) == "variable_") {
+		c.fillStyle = selection_color[i];
+		var_name = current_selection[i].substring(9, current_selection[i].length)
+		c.fillText(var_name + " = " + window[var_name], 100, 100 + 20*i);
+	    }
     }
 }
 
@@ -136,11 +146,8 @@ function markup_variables(text) {
 	if(text[i].match(/\w/))
 	    current+= text[i];
 	else {
-	    if(current.length >= 1 && var_exclusion.indexOf(current) == -1 && window[current] != null && typeof(window[current]) != "function") {
-		if(!(current in vars))
-		    vars[current] = var_counter++;
-		current = "<b class='inspectable variable_" + vars[current] + "'>" + current + "</b>";
-	    }
+	    if(current.length >= 1 && var_exclusion.indexOf(current) == -1 && window[current] != null && typeof(window[current]) != "function")
+		current = "<b class='inspectable variable_" + current + "'>" + current + "</b>";
 
 	    acc+= current;
 	    acc+= text[i];
