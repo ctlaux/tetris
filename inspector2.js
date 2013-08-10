@@ -77,14 +77,90 @@ function draw_inspector() {
 	c.font = "12pt Arial";
 	c.textAlign = "start";
 	c.textBaseline = "alphabetic";
+	var y = 10;
 
 	for(var i = 0; i < current_selection.length; i++)
 	    if(current_selection[i] != null && current_selection[i].substring(0, 9) == "variable_") {
-		c.fillStyle = selection_color[i];
-		var_name = current_selection[i].substring(9, current_selection[i].length)
-		c.fillText(var_name + " = " + window[var_name], 100, 100 + 20*i);
+		var var_name = current_selection[i].substring(9, current_selection[i].length);
+		var v = window[var_name];
+		var d = array_dimension(v);
+
+		if(v instanceof Array && d == 1) {
+		    c.fillStyle = selection_color[i];
+		    c.fillText(var_name + " = ", 10, y+20);
+		    draw_array1d(c, v, 100, y+2, 18);
+		    y+= 20;
+		}
+		else if(v instanceof Array && d == 2) {
+		    c.fillStyle = selection_color[i];
+		    c.fillText(var_name + " = ", 10, y+20);
+		    draw_array2d(c, v, 100, y+2, 18);
+		    y+= v[0].length*20;
+		}
+		else {
+		    c.fillStyle = selection_color[i];
+		    c.fillText(var_name + " = " + v, 10, y+20);
+		    y+= 20;
+		}
 	    }
     }
+}
+
+function array_dimension(arr) {
+    var x = arr;
+    var d = 0;
+
+    while(x instanceof Array) {
+	d++;
+	x = x[0];
+    }
+
+    return d;
+}
+
+function draw_array1d(c, arr, start_x, start_y, height) {
+    c.beginPath();
+    c.strokeStyle = "grey";
+    c.fillStyle = "black";
+    c.font = "12pt Arial";
+    c.textAlign = "start";
+    c.textBaseline = "alphabetic";
+
+    var x = start_x;
+
+    for(var i = 0; i < arr.length; i++) {
+	var width = c.measureText(arr[i].toString()).width + 8;
+	c.rect(x, start_y, width, height);
+	c.fillText(arr[i].toString(), x + 3, start_y + height - 2);
+	x+= width;
+    }
+
+    c.stroke();
+}
+
+function draw_array2d(c, arr, start_x, start_y, height) {
+    var max_width = 0;
+
+    for(var i = 0; i < arr.length; i++)
+	for(var j = 0; j < arr[0].length; j++) {
+	    var width = c.measureText(arr[i][j].toString()).width + 8;
+	    max_width = Math.max(max_width, width);
+	}
+
+    c.beginPath();
+    c.strokeStyle = "grey";
+    c.fillStyle = "black";
+    c.font = "12pt Arial";
+    c.textAlign = "start";
+    c.textBaseline = "alphabetic";
+
+    for(var i = 0; i < arr.length; i++)
+	for(var j = 0; j < arr[0].length; j++) {
+	    c.rect(start_x + i*max_width, start_y + j*height, max_width, height);
+	    c.fillText(arr[i][j].toString(), start_x + max_width*i + 3, start_y + height*j + height - 2);
+	}
+
+    c.stroke();
 }
 
 function selection_begins_with(str) {
