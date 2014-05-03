@@ -253,8 +253,8 @@ function launch() {
     squares = calculate_squares(rot, type);
 
     for(var i = 0; i < squares.length; i++) {
-	start = Math.max(start, -squares[i][0])
-	end = Math.min(end, field_width - squares[i][0])
+	start = Math.max(start, -squares[i][0]);
+	end = Math.min(end, field_width - squares[i][0]);
     }
 
     x = Math.floor(Math.random() * (end - start - 1)) + start;
