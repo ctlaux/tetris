@@ -292,7 +292,9 @@ function new_game() {
     draw();
 }
 
-keypress.combo("up", function(event) {
+var listener = new window.keypress.Listener();
+
+listener.simple_combo("up", function(event) {
     event.preventDefault();
 
     if(rotates[type]) {
@@ -307,13 +309,13 @@ keypress.combo("up", function(event) {
     }
 });
 
-keypress.combo("down", function(event) {
+listener.simple_combo("down", function(event) {
     event.preventDefault();
 
     move_down();
 });
 
-keypress.combo("right", function(event) {
+listener.simple_combo("right", function(event) {
     event.preventDefault();
 
     var move = true;
@@ -331,7 +333,7 @@ keypress.combo("right", function(event) {
     }
 });
 
-keypress.combo("left", function(event) {
+listener.simple_combo("left", function(event) {
     event.preventDefault();
 
     var move = true;
@@ -349,7 +351,7 @@ keypress.combo("left", function(event) {
     }
 });
 
-keypress.combo("p", function() {
+listener.simple_combo("p", function() {
     if(paused) {
 	paused = false;
 	$("#message").text("");
