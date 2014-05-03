@@ -195,8 +195,17 @@ for(var <span style="color:red">j</span> = 0; <span style="color:red">j</span> <
     </div>
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="http://dmauro.github.io/Keypress/js/keypress.js"></script>
+    <script type="text/javascript" src="keypress-2.0.1.min.js"></script>
     <script type="text/javascript" src="tetris.js"></script>
     <script type="text/javascript" src="inspector.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var canvas2 = document.getElementById('canvas2');
+        canvas2.addEventListener("click", click_select_square_canvas2, false);
+
+        var canvas3 = document.getElementById('canvas3');
+        canvas3.addEventListener("click", click_select_square_canvas3, false);
+      });
+    </script>
   </body>
 </html>

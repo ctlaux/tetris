@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Tetris</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <style type="text/css">
+      #left {
+        position: absolute;
+      }
+
+      #header {
+        font-family:"Arial", Arial, sans-serif;
+        width: 200px;
+      }
+
+      #score {
+        float: right;
+      }
+
+      #footer {
+        width: 200px;
+      }
+
+      p {
+        font-family:"Arial", Arial, sans-serif;
+        width: 200px;
+      }
+
+      #message {
+        font-family:"Arial", Arial, sans-serif;
+        float: left;
+        display: none;
+      }
+
+      #newgame {
+        font-family:"Arial", Arial, sans-serif;
+        float: right;
+      }
+
+      #canvas2 {
+        position: absolute;
+        margin-left: 220px;
+        margin-top: 0px;
+      }
+
+      #middle {
+        position: absolute;
+        margin-left: 220px;
+        margin-top: 250px;
+      }
+
+      #code {
+        overflow:scroll;
+        border: 1px black solid;
+        padding: 10px;
+        margin: 4px;
+        width: 500px;
+        height: 500px;
+      }
+
+      .inspectable {
+        cursor:pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div>
+	<div id="left">
+	  <div id="header"><span>Points:</span><span id="score">0</span></div>
+	  <canvas id="canvas1" width="200" height="600"></canvas>
+	  <div id="footer">
+	    <span id="message">Game Over!</span>
+	    <span id="newgame"><input type="button" value="New Game" onclick="new_game();"></input></span>
+	  </div>
+	  <div>
+	    <br /><br />
+	    <p>arrow keys move bricks, press up to rotate, hold down to drop<br /><br />
+	    <a href="https://github.com/ctlaux/tetris">source code</a>
+	    </p>
+	  </div>
+	</div>
+
+	<canvas id="canvas2" width="900" height="250"></canvas>
+
+	<div id="middle">
+	  <pre id="code" style="color:grey;">
+	  </pre>
+	</div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="keypress-2.0.1.min.js"></script>
+    <script type="text/javascript" src="tetris.js"></script>
+    <script type="text/javascript" src="inspector.js"></script>
+    <script type="text/javascript" src="inspector2.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var canvas2 = document.getElementById('canvas2');
+        canvas2.addEventListener("click", click_select_square_canvas2, false);
+
+        window.oncontextmenu = function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          return false;
+        };
+
+        $.ajax({type: "GET",
+                url: source,
+                dataType: "xml",
+	        success: function(data) {
+		  xml = data;
+		  render_markup(xml.firstChild);
+	        }
+	     });
+      });
+    </script>
+  </body>
+</html>

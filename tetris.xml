@@ -1,20 +1,4 @@
-// Inspectable Tetris clone 
-// Copyright (c) 2013 Christopher Laux <ctlaux@gmail.com>
-
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
+<code>
 var colors = [[224, 27, 93], [152, 224, 27], [130, 130, 130]];
 
 var bricks = [[[1, 1, 1],
@@ -54,9 +38,9 @@ var interval_id = 0;
 
 
 function setup() {
-    for(var i = 0; i < field_width; i++) {
+    for(var i = 0; i &lt; field_width; i++) {
 	field[i] = new Array(field_height);
-	for(var j = 0; j < field_height; j++) {
+	for(var j = 0; j &lt; field_height; j++) {
 	    field[i][j] = -1;
 	}
     }
@@ -72,8 +56,8 @@ function draw() {
     c.rect(0, 0, field_width * width, field_height * height);
     c.stroke();
 
-    for(var i = 0; i < field_width; i++) {
-	for(var j = 0; j < field_height; j++) {
+    for(var i = 0; i &lt; field_width; i++) {
+	for(var j = 0; j &lt; field_height; j++) {
 	    if(field[i][j] != -1) {
 		draw_square(c, i*width, j*height, field[i][j]);
 	    }
@@ -86,7 +70,7 @@ function draw() {
 }
 
 function draw_brick(c, center_x, center_y) {
-    for(var i = 0; i < squares.length; i++) {
+    for(var i = 0; i &lt; squares.length; i++) {
 	draw_square(c, (center_x + squares[i][0]) * width, (center_y + squares[i][1]) * height, color);
     }
 }
@@ -125,40 +109,40 @@ function draw_square(c, x, y, color) {
     c.stroke();
 }
 
-function calculate_squares(rot, m) {
+function calculate_squares(<inspect class="rot">rot</inspect>, <inspect class="calcsq_k">k</inspect>) {
     var ret = [];
 
-    for(var i = 0; i < bricks[m].length; i++)
-	for(var j = 0; j < bricks[m][0].length; j++)
-	    if(bricks[m][i][j] == 1)
-		ret.push(rotate(rot, i - center[m][0], j - center[m][1]));
+    for(var <inspect class="calcsq_i">i</inspect> = 0; <inspect class="calcsq_i">i</inspect> &lt; bricks[<inspect class="calcsq_k">k</inspect>].length; <inspect class="calcsq_i">i</inspect>++)
+	for(var <inspect class="calcsq_j">j</inspect> = 0; <inspect class="calcsq_j">j</inspect> &lt; bricks[<inspect class="calcsq_k">k</inspect>][0].length; <inspect class="calcsq_j">j</inspect>++)
+	    if(bricks[<inspect class="calcsq_k">k</inspect>][<inspect class="calcsq_i">i</inspect>][<inspect class="calcsq_j">j</inspect>] == 1)
+		ret.push(rotate(<inspect class="rot">rot</inspect>, <inspect class="calcsq_i">i</inspect> - center[<inspect class="calcsq_k">k</inspect>][0], <inspect class="calcsq_j">j</inspect> - center[<inspect class="calcsq_k">k</inspect>][1]));
     return ret;
 }
 
-function rotate(rot, x, y) {
-    switch(rot) {
+function rotate(<inspect class="rot">rot</inspect>, <inspect class="rotate_x">x</inspect>, <inspect class="rotate_y">y</inspect>) {
+    switch(<inspect class="rot">rot</inspect>) {
     case 0:
-	p = x;
-	q = y;
+	<inspect class="rotate_p">p</inspect> = <inspect class="rotate_x">x</inspect>;
+	<inspect class="rotate_q">q</inspect> = <inspect class="rotate_y">y</inspect>;
 	break;
 
     case 1:
-	p = y;
-	q = -x;
+	<inspect class="rotate_p">p</inspect> = <inspect class="rotate_y">y</inspect>;
+	<inspect class="rotate_q">q</inspect> = -<inspect class="rotate_x">x</inspect>;
 	break;
 
     case 2:
-	p = -x;
-	q = -y;
+	<inspect class="rotate_p">p</inspect> = -<inspect class="rotate_x">x</inspect>;
+	<inspect class="rotate_q">q</inspect> = -<inspect class="rotate_y">y</inspect>;
 	break;
 
     case 3:
-	p = -y;
-	q = x;
+	<inspect class="rotate_p">p</inspect> = -<inspect class="rotate_y">y</inspect>;
+	<inspect class="rotate_q">q</inspect> = <inspect class="rotate_x">x</inspect>;
 	break;
     }
 
-    return [p, q];
+    return [<inspect class="rotate_p">p</inspect>, <inspect class="rotate_q">q</inspect>];
 }
 
 function move_down() {
@@ -173,10 +157,10 @@ function move_down() {
 }
 
 function check_if_stopped() {
-    for(var i = 0; i < squares.length; i++)
+    for(var i = 0; i &lt; squares.length; i++)
 	if(y + squares[i][1] == field_height - 1 ||
-	   (y + squares[i][1] >= 0 && field[x + squares[i][0]][y + squares[i][1] + 1] != -1)) {
-	    for(var i = 0; i < squares.length; i++)
+	   (y + squares[i][1] &gt;= 0 &amp;&amp; field[x + squares[i][0]][y + squares[i][1] + 1] != -1)) {
+	    for(var i = 0; i &lt; squares.length; i++)
 		field[x + squares[i][0]][y + squares[i][1]] = color;
 
 	    remove_full_lines();
@@ -192,10 +176,10 @@ function calculate_rot_move(new_rot) {
     var dx = 0;
     var s = calculate_squares(new_rot, type);
 
-    for(var i = 0; i < s.length; i++) {
-	if(x + s[i][0] < 0)
+    for(var i = 0; i &lt; s.length; i++) {
+	if(x + s[i][0] &lt; 0)
 	    dx = Math.max(dx, -(x + s[i][0]));
-	if(x + s[i][0] >= field_width)
+	if(x + s[i][0] &gt;= field_width)
 	    dx = Math.min(dx, field_width - 1 - (x + s[i][0]));
     }
 
@@ -206,10 +190,10 @@ function can_rotate(new_rot, x, y) {
     var can_rotate = true;
     var s = calculate_squares(new_rot, type);
 
-    for(var i = 0; i < s.length; i++) {
-	if(x + s[i][0] < 0 || x + s[i][0] >= field_width || y + s[i][1] >= field_height)
+    for(var i = 0; i &lt; s.length; i++) {
+	if(x + s[i][0] &lt; 0 || x + s[i][0] &gt;= field_width || y + s[i][1] &gt;= field_height)
 	    can_rotate = false;
-	else if(y + s[i][1] >= 0 && field[x + s[i][0]][y + s[i][1]] != -1)
+	else if(y + s[i][1] &gt;= 0 &amp;&amp; field[x + s[i][0]][y + s[i][1]] != -1)
 	    can_rotate = false;
     }
 
@@ -217,15 +201,15 @@ function can_rotate(new_rot, x, y) {
 }
 
 function remove_full_lines() {
-    for(var j = 0; j < field_height; j++) {
+    for(var j = 0; j &lt; field_height; j++) {
 	full = true;
-	for(var i = 0; i < field_width; i++)
+	for(var i = 0; i &lt; field_width; i++)
 	    if(field[i][j] == -1)
 		full = false;
 
 	if(full) {
-	    for(var k = 0; k < field_width; k++) {
-		for(var l = j; l > 0; l--)
+	    for(var k = 0; k &lt; field_width; k++) {
+		for(var l = j; l &gt; 0; l--)
 		    field[k][l] = field[k][l-1];
 		field[k][0] = -1;
 	    }
@@ -252,9 +236,9 @@ function launch() {
     var end = field_width;
     squares = calculate_squares(rot, type);
 
-    for(var i = 0; i < squares.length; i++) {
-	start = Math.max(start, -squares[i][0]);
-	end = Math.min(end, field_width - squares[i][0]);
+    for(var i = 0; i &lt; squares.length; i++) {
+	start = Math.max(start, -squares[i][0])
+	end = Math.min(end, field_width - squares[i][0])
     }
 
     x = Math.floor(Math.random() * (end - start - 1)) + start;
@@ -265,7 +249,7 @@ function launch() {
 
 function is_game_over() {
     over = false;
-    for(var i = 0; i < field_width; i++) {
+    for(var i = 0; i &lt; field_width; i++) {
 	if(field[i][0] != -1)
 	    over = true;
     }
@@ -292,9 +276,7 @@ function new_game() {
     draw();
 }
 
-var listener = new window.keypress.Listener();
-
-listener.simple_combo("up", function(event) {
+keypress.combo("up", function(event) {
     event.preventDefault();
 
     if(rotates[type]) {
@@ -309,20 +291,20 @@ listener.simple_combo("up", function(event) {
     }
 });
 
-listener.simple_combo("down", function(event) {
+keypress.combo("down", function(event) {
     event.preventDefault();
 
     move_down();
 });
 
-listener.simple_combo("right", function(event) {
+keypress.combo("right", function(event) {
     event.preventDefault();
 
     var move = true;
-    for(var i = 0; i < squares.length; i++) {
+    for(var i = 0; i &lt; squares.length; i++) {
 	if(x + squares[i][0] == field_width - 1)
 	    move = false;
-	else if(y + squares[i][1] >= 0 && field[x + squares[i][0] + 1][y + squares[i][1]] != -1)
+	else if(y + squares[i][1] &gt;= 0 &amp;&amp; field[x + squares[i][0] + 1][y + squares[i][1]] != -1)
 	    move = false;
     }
 
@@ -333,14 +315,14 @@ listener.simple_combo("right", function(event) {
     }
 });
 
-listener.simple_combo("left", function(event) {
+keypress.combo("left", function(event) {
     event.preventDefault();
 
     var move = true;
-    for(var i = 0; i < squares.length; i++) {
+    for(var i = 0; i &lt; squares.length; i++) {
 	if(x + squares[i][0] == 0)
 	    move = false;
-	else if(y + squares[i][1] >= 0 && field[x + squares[i][0] - 1][y + squares[i][1]] != -1)
+	else if(y + squares[i][1] &gt;= 0 &amp;&amp; field[x + squares[i][0] - 1][y + squares[i][1]] != -1)
 	    move = false;
     }
 
@@ -351,7 +333,7 @@ listener.simple_combo("left", function(event) {
     }
 });
 
-listener.simple_combo("p", function() {
+keypress.combo("p", function() {
     if(paused) {
 	paused = false;
 	$("#message").text("");
@@ -367,3 +349,4 @@ listener.simple_combo("p", function() {
 $(function() {
     new_game();
 });
+</code>
